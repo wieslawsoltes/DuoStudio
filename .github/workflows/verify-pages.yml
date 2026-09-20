@@ -1,0 +1,85 @@
+name: Verify published Duo Studio
+
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/verify-pages.yml']
+  workflow_dispatch:
+  workflow_run:
+    workflows: ['Build and deploy Duo Studio']
+    types: [completed]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verify-duo-studio-pages
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    if: github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.event != 'pull_request')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - name: Verify public HTTPS content and complete downloadable source
+        shell: bash
+        env:
+          SITE_URL: https://wieslawsoltes.github.io/DuoStudio/
+        run: |
+          python3 - <<'PY'
+          import hashlib, io, json, os, time, urllib.request, zipfile
+          base = os.environ['SITE_URL']
+          apps = ('chatgpt', 'threads', 'google', 'tiktok', 'whatsapp', 'instagram', 'youtube', 'maps', 'gmail', 'gemini')
+          def fetch(path):
+              request = urllib.request.Request(base + path, headers={'User-Agent': 'DuoStudio-Pages-Verification/1.0'})
+              with urllib.request.urlopen(request, timeout=30) as response:
+                  if response.status != 200:
+                      raise RuntimeError(f'{path}: HTTP {response.status}')
+                  if not response.url.startswith(base):
+                      raise RuntimeError(f'Unexpected redirect: {response.url}')
+                  data = response.read()
+                  print(f'HTTP 200: {path or "/"} ({len(data):,} bytes)')
+                  return data
+          for attempt in range(6):
+              try:
+                  page = fetch('')
+                  standalone = fetch('duo-studio.html')
+                  manifest = json.loads(fetch('build-manifest.json'))
+                  if page != standalone:
+                      raise RuntimeError('Launcher and standalone HTML differ')
+                  if len(page) != manifest['htmlBytes'] or hashlib.sha256(page).hexdigest() != manifest['sha256']:
+                      raise RuntimeError('Published HTML does not match the build manifest')
+                  for app in apps:
+                      if f'/* SOURCE: src/apps/{app}.js */'.encode() not in page:
+                          raise RuntimeError('Missing embedded app: ' + app)
+                  if manifest['externalRuntimeDependencies']:
+                      raise RuntimeError('Unexpected external runtime dependencies')
+                  source = fetch('downloads/duo-studio-source.zip')
+                  expected = fetch('downloads/duo-studio-source.zip.sha256').decode().split()[0]
+                  if hashlib.sha256(source).hexdigest() != expected:
+                      raise RuntimeError('Source ZIP checksum mismatch')
+                  inventory = json.loads(fetch('downloads/source-manifest.json'))
+                  with zipfile.ZipFile(io.BytesIO(source)) as archive:
+                      if archive.testzip() is not None:
+                          raise RuntimeError('Source ZIP CRC validation failed')
+                      for entry in inventory['files']:
+                          data = archive.read('duo-studio/' + entry['path'])
+                          if len(data) != entry['bytes'] or hashlib.sha256(data).hexdigest() != entry['sha256']:
+                              raise RuntimeError('Source entry mismatch: ' + entry['path'])
+                      for app in apps:
+                          archive.getinfo(f'duo-studio/src/apps/{app}.js')
+                      archive.getinfo('duo-studio/.github/workflows/pages.yml')
+                      if archive.read('duo-studio/dist/duo-studio.html') != page:
+                          raise RuntimeError('Source ZIP standalone differs from the live simulator')
+                  message = f'Published HTTPS simulator verified: all ten apps, {len(page):,}-byte standalone, {len(inventory["files"])} source files, ZIP CRC and SHA-256 checks passed.'
+                  print(message)
+                  with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as summary:
+                      summary.write(f'## Duo Studio is published\n\n{base}\n\n{message}\n')
+                  break
+              except Exception as error:
+                  if attempt == 5:
+                      raise
+                  print(f'Publication propagation check {attempt + 1}: {error}; retrying.')
+                  time.sleep(10)
+          PY
