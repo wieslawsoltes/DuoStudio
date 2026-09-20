@@ -35,13 +35,18 @@ try:
   report['adapter']=adapter
   if adapter is not None:
    def gpu():
-    ev('Duo.shell.pair("scenelab","polyform")');page.wait_for_timeout(1500)
-    state=ev('({wallpaper:Duo.gpu.mode,scene:Duo.shell.getInstance("scenelab").api.renderer.backend,reason:Duo.shell.getInstance("scenelab").api.renderer.reason})');report['gpu']=state
-    if state['scene']!='WebGPU' or state['wallpaper']!='WebGPU':raise AssertionError(str(state))
+    ev('Duo.shell.pair("scenelab","polyform")')
+    # A cold software adapter can need seconds to compile. Wait for completion;
+    # a completed Canvas fallback still fails the actual WebGPU assertion.
+    page.wait_for_function('()=>Duo.gpu.mode!=="Starting" && ["scenelab","polyform"].every(id=>{const r=Duo.shell.getInstance(id).api.renderer;return r.backend==="WebGPU"||!!r.reason;})',timeout=90000)
+    state=ev('({wallpaper:Duo.gpu.mode,wallpaperReason:Duo.gpu.reason,scene:Duo.shell.getInstance("scenelab").api.renderer.backend,reason:Duo.shell.getInstance("scenelab").api.renderer.reason,polyform:Duo.shell.getInstance("polyform").api.renderer.backend,polyformReason:Duo.shell.getInstance("polyform").api.renderer.reason})');report['gpu']=state
+    if any(state[k]!='WebGPU' for k in ('scene','polyform','wallpaper')):raise AssertionError(str(state))
     return ev('async()=>{const v=Duo.shell.getInstance("scenelab").api.renderer;v.device.pushErrorScope("validation");v.draw();await v.device.queue.onSubmittedWorkDone();const e=await v.device.popErrorScope();if(e)throw Error(e.message);return v.triangleCount>100;}')
    check('WebGPU compiles and executes modeling and wallpaper pipelines',gpu)
    def loss():
-    ev('Duo.shell.getInstance("scenelab").api.renderer.device.destroy()');page.wait_for_timeout(300);return ev('Duo.shell.getInstance("scenelab").api.renderer.backend==="Canvas 2D"')
+    ev('Duo.shell.getInstance("scenelab").api.renderer.device.destroy()')
+    page.wait_for_function('["scenelab","polyform"].every(id=>Duo.shell.getInstance(id).api.renderer.backend==="Canvas 2D")',timeout=30000)
+    return ev('Duo.shell.getInstance("scenelab").api.renderer.world.length>0')
    check('Explicit GPU device loss falls back without losing scene',loss)
   else:
    report['gpu']={'skipped':'No adapter in this browser/runner. GPU execution not asserted.'};print('SKIP WebGPU: no adapter',flush=True)
