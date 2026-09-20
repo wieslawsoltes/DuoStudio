@@ -1,0 +1,217 @@
+{
+  "passed": 39,
+  "failed": 0,
+  "results": [
+    {
+      "test": "Ten app modules registered",
+      "passed": true,
+      "ms": 2
+    },
+    {
+      "test": "Home contains ten apps and two system tiles",
+      "passed": true,
+      "ms": 34
+    },
+    {
+      "test": "Standalone contains no external scripts or styles",
+      "passed": true,
+      "ms": 2
+    },
+    {
+      "test": "chatgpt: launch with two visible app panes",
+      "passed": true,
+      "ms": 160
+    },
+    {
+      "test": "threads: launch with two visible app panes",
+      "passed": true,
+      "ms": 161
+    },
+    {
+      "test": "google: launch with two visible app panes",
+      "passed": true,
+      "ms": 159
+    },
+    {
+      "test": "tiktok: launch with two visible app panes",
+      "passed": true,
+      "ms": 159
+    },
+    {
+      "test": "whatsapp: launch with two visible app panes",
+      "passed": true,
+      "ms": 157
+    },
+    {
+      "test": "instagram: launch with two visible app panes",
+      "passed": true,
+      "ms": 165
+    },
+    {
+      "test": "youtube: launch with two visible app panes",
+      "passed": true,
+      "ms": 160
+    },
+    {
+      "test": "maps: launch with two visible app panes",
+      "passed": true,
+      "ms": 164
+    },
+    {
+      "test": "gmail: launch with two visible app panes",
+      "passed": true,
+      "ms": 158
+    },
+    {
+      "test": "gemini: launch with two visible app panes",
+      "passed": true,
+      "ms": 159
+    },
+    {
+      "test": "ChatGPT: prompt creates an editable HTML artifact",
+      "passed": true,
+      "ms": 229
+    },
+    {
+      "test": "ChatGPT: sandboxed, network-isolated HTML preview",
+      "passed": true,
+      "ms": 133
+    },
+    {
+      "test": "Fold, unfold, book and tabletop retain editor DOM and selection",
+      "passed": true,
+      "ms": 601
+    },
+    {
+      "test": "Threads: publish, reply and like update the local model",
+      "passed": true,
+      "ms": 545
+    },
+    {
+      "test": "Google: ranked search, saved sources and comparison",
+      "passed": true,
+      "ms": 258
+    },
+    {
+      "test": "Instagram: import real image, publish, save and comment",
+      "passed": true,
+      "ms": 506
+    },
+    {
+      "test": "Gemini: build a board, edit a card, reorder cards",
+      "passed": true,
+      "ms": 507
+    },
+    {
+      "test": "Gmail: compose, save to Sent, archive and undo",
+      "passed": true,
+      "ms": 335
+    },
+    {
+      "test": "WhatsApp: message composer saves local messages",
+      "passed": true,
+      "ms": 180
+    },
+    {
+      "test": "Dijkstra: connected, disconnected and zero-distance cases",
+      "passed": true,
+      "ms": 4
+    },
+    {
+      "test": "Maps: add route stop, zoom and animate calculated route",
+      "passed": true,
+      "ms": 999
+    },
+    {
+      "test": "Cross-app: Maps shares actual route into WhatsApp Split View",
+      "passed": true,
+      "ms": 235
+    },
+    {
+      "test": "Split View: keyboard resize, swap sides and save app pair",
+      "passed": true,
+      "ms": 116
+    },
+    {
+      "test": "TikTok: real bundled playback, like, comment and next film",
+      "passed": true,
+      "ms": 794
+    },
+    {
+      "test": "YouTube: playback, seeking, notes, captions and fold continuity",
+      "passed": true,
+      "ms": 1116
+    },
+    {
+      "test": "Home suspends hidden media",
+      "passed": true,
+      "ms": 19
+    },
+    {
+      "test": "Appearance and reduced-motion controls affect rendered UI",
+      "passed": true,
+      "ms": 87
+    },
+    {
+      "test": "Session: complete JSON round-trip and remount all ten apps",
+      "passed": true,
+      "ms": 1666
+    },
+    {
+      "test": "Session: malformed schemas, URLs, queues and prototype pollution rejected",
+      "passed": true,
+      "ms": 14
+    },
+    {
+      "test": "393-pixel touch layout: pane switching and no horizontal page overflow",
+      "passed": true,
+      "ms": 520
+    },
+    {
+      "test": "Dialog replacement disposes resources exactly once",
+      "passed": true,
+      "ms": 92
+    },
+    {
+      "test": "All ten apps retain their instance through all four postures (40 states)",
+      "passed": true,
+      "ms": 5533
+    },
+    {
+      "test": "Direct touch keeps both panes reachable from every simulated posture",
+      "passed": true,
+      "ms": 231
+    },
+    {
+      "test": "No duplicate SVG gradient IDs",
+      "passed": true,
+      "ms": 5
+    },
+    {
+      "test": "No unexpected JavaScript exceptions",
+      "passed": true,
+      "ms": 0
+    },
+    {
+      "test": "No app-initiated HTTP or HTTPS requests",
+      "passed": true,
+      "ms": 0
+    }
+  ],
+  "pageErrors": [],
+  "consoleErrors": [],
+  "externalRequests": [],
+  "environment": {
+    "secureContext": false,
+    "webGPU": false,
+    "renderer": "Canvas 2D",
+    "persistentStorage": false,
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+  },
+  "mode": "Offline content injection (browser URL policy blocks navigation in this environment)",
+  "boundaries": [
+    "WebGPU runtime and native camera/microphone permissions were not testable in the restricted browser context.",
+    "Session serialization/import was tested; persistent localStorage reload requires an unrestricted HTTP/HTTPS origin.",
+    "No physical iPhone Duo, Safari, VoiceOver, or real fold sensor was tested."
+  ]
+}

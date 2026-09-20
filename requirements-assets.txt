@@ -1,0 +1,4 @@
+# Optional regeneration of the already-bundled original media.
+numpy>=2,<3
+Pillow>=10,<13
+# Also install ffmpeg separately; it is not a Python dependency.

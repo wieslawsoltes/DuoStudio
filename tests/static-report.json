@@ -1,0 +1,107 @@
+{
+  "passed": 25,
+  "failed": 0,
+  "results": [
+    {
+      "name": "JavaScript parses: src/apps/chatgpt.js",
+      "passed": true
+    },
+    {
+      "name": "JavaScript parses: src/apps/gemini.js",
+      "passed": true
+    },
+    {
+      "name": "JavaScript parses: src/apps/gmail.js",
+      "passed": true
+    },
+    {
+      "name": "JavaScript parses: src/apps/google.js",
+      "passed": true
+    },
+    {
+      "name": "JavaScript parses: src/apps/instagram.js",
+      "passed": true
+    },
+    {
+      "name": "JavaScript parses: src/apps/maps.js",
+      "passed": true
+    },
+    {
+      "name": "JavaScript parses: src/apps/threads.js",
+      "passed": true
+    },
+    {
+      "name": "JavaScript parses: src/apps/tiktok.js",
+      "passed": true
+    },
+    {
+      "name": "JavaScript parses: src/apps/whatsapp.js",
+      "passed": true
+    },
+    {
+      "name": "JavaScript parses: src/apps/youtube.js",
+      "passed": true
+    },
+    {
+      "name": "JavaScript parses: src/core.js",
+      "passed": true
+    },
+    {
+      "name": "JavaScript parses: src/data.js",
+      "passed": true
+    },
+    {
+      "name": "JavaScript parses: src/gpu.js",
+      "passed": true
+    },
+    {
+      "name": "JavaScript parses: src/icons.js",
+      "passed": true
+    },
+    {
+      "name": "JavaScript parses: src/shell.js",
+      "passed": true
+    },
+    {
+      "name": "Exactly ten app modules",
+      "passed": true
+    },
+    {
+      "name": "No unresolved template placeholders",
+      "passed": true
+    },
+    {
+      "name": "No external script or stylesheet dependencies",
+      "passed": true
+    },
+    {
+      "name": "Nine inline media assets",
+      "passed": true
+    },
+    {
+      "name": "Six included JPEG compositions",
+      "passed": true
+    },
+    {
+      "name": "Three included MP4 films",
+      "passed": true
+    },
+    {
+      "name": "Manifest SHA-256 matches HTML",
+      "passed": true
+    },
+    {
+      "name": "Manifest byte count matches HTML",
+      "passed": true
+    },
+    {
+      "name": "Single-file script parses after embedding",
+      "passed": true
+    },
+    {
+      "name": "WGSL compute and presentation entry points are present",
+      "passed": true
+    }
+  ],
+  "boundary": "Syntax and build checks only. WGSL presence checks do not prove shader compilation or GPU execution."
+}

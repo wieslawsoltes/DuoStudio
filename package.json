@@ -1,0 +1,12 @@
+{
+  "name": "duo-studio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Offline foldable-device interaction lab with ten local app studies and WebGPU",
+  "license": "MIT",
+  "scripts": {
+    "build": "python3 scripts/build.py",
+    "start": "python3 scripts/serve.py",
+    "check": "node scripts/check.mjs"
+  }
+}

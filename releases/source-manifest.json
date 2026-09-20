@@ -1,0 +1,325 @@
+{
+  "format": 1,
+  "files": [
+    {
+      "path": ".github/workflows/pages.yml",
+      "bytes": 6402,
+      "sha256": "1d5d9f1e8815720d26f18c82805b59567a805c94c074b8bc4bac9fffb67389d3"
+    },
+    {
+      "path": ".gitignore",
+      "bytes": 72,
+      "sha256": "e5486c09a3dde1b72aac570cc7e888a3e82b83e173845e3e8cb69b0f00ebbd31"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 1353,
+      "sha256": "0874a943c6e271835c9d6b3dbf55c6537e958b4c9ce09131eca0746039a9a4bd"
+    },
+    {
+      "path": "README.md",
+      "bytes": 10607,
+      "sha256": "19d107709cc91f6e7696e1da593a3fee55325b30c64587637424dc7acabd2c36"
+    },
+    {
+      "path": "assets/alpine.jpg",
+      "bytes": 88735,
+      "sha256": "6f00d41b40d10ff56b9b73e3424640aa71e5d38bfa0d96618d13c2b7bffc8db1"
+    },
+    {
+      "path": "assets/alpine.mp4",
+      "bytes": 315837,
+      "sha256": "4d43cd3dfacdf6925638503d6f0f86593fdeb161aa3056fda4927e5c25ae647f"
+    },
+    {
+      "path": "assets/ambient.wav",
+      "bytes": 705644,
+      "sha256": "a2f7fd00279d635a2477029207df08c5b91bcbb422bbafa165dd0a90b1c93e0e"
+    },
+    {
+      "path": "assets/arches.jpg",
+      "bytes": 63532,
+      "sha256": "794973c4ae49ca4756a659f4915c5438c0cfbaeab5cddf6f422c5ac0acf7e38a"
+    },
+    {
+      "path": "assets/coast.jpg",
+      "bytes": 80736,
+      "sha256": "ea83ba636686a0e1544c241774f6a84a03d7dab45cfca7eec5e804922aacbbaf"
+    },
+    {
+      "path": "assets/coast.mp4",
+      "bytes": 266488,
+      "sha256": "0915ae06ca1a37a063bf2d21ffc29b53894713dace1544cd54e60e0bb7c92f5d"
+    },
+    {
+      "path": "assets/dunes.jpg",
+      "bytes": 70064,
+      "sha256": "1b9af0cad6ff62465aa96e604ea09107211a0ac173a86ec115858b56b70a87f0"
+    },
+    {
+      "path": "assets/dunes.mp4",
+      "bytes": 224481,
+      "sha256": "8d3691c9f017b24ab781448774f5df2fc1964215f1bf11aa9044fe6f9af94904"
+    },
+    {
+      "path": "assets/golden.jpg",
+      "bytes": 69040,
+      "sha256": "c8b600d35ac32840667ab7d9a2cfd0b5419619bed3082300469767ccb6caf8ea"
+    },
+    {
+      "path": "assets/orbital.jpg",
+      "bytes": 57863,
+      "sha256": "f87715f3ffda50b27577e1553893e43ada8b05d297a2fd96eda7526a60a6bc99"
+    },
+    {
+      "path": "dist/build-manifest.json",
+      "bytes": 731,
+      "sha256": "05eefea291702b74f5ba865ce7afb61e7f4a708f0d1dacb510963d25fe81b563"
+    },
+    {
+      "path": "dist/duo-studio.html",
+      "bytes": 1916816,
+      "sha256": "26ab63b779bac4a23aafac0da1b1a9c30ec25ef1b7c527b7ada4980822894cf3"
+    },
+    {
+      "path": "dist/index.html",
+      "bytes": 1916816,
+      "sha256": "26ab63b779bac4a23aafac0da1b1a9c30ec25ef1b7c527b7ada4980822894cf3"
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "bytes": 9816,
+      "sha256": "2ec890d1a39ba70cde44f1910a43be79480d7be207d0c0426f0bc8235c07640a"
+    },
+    {
+      "path": "docs/DEPLOYMENT.md",
+      "bytes": 2866,
+      "sha256": "c365964b98cfac1b89fdd3d0873c7efa5a3ee6574868d15b263c7fbffbb87ea1"
+    },
+    {
+      "path": "docs/FEATURE_MATRIX.md",
+      "bytes": 4624,
+      "sha256": "09af2b1a60053d041446ea888715091591c3eb89a37b9c7a4f59139fc658c885"
+    },
+    {
+      "path": "docs/FORM_FACTOR.md",
+      "bytes": 6405,
+      "sha256": "da4466da7e5647f5d74074079a5fcde3cf53fed5ec02a897bccff9a6817d6f05"
+    },
+    {
+      "path": "docs/SOURCES.md",
+      "bytes": 3208,
+      "sha256": "578c69e07de27b2459307ac3ec2dfd771d9e7f7f91c81ee2572c1243bb0d10e7"
+    },
+    {
+      "path": "docs/TESTING.md",
+      "bytes": 5866,
+      "sha256": "ef1fa5e20bd6cec3ed6e6618cb00c540fced7ee2143001a8e4a66a6a9f08df45"
+    },
+    {
+      "path": "duo-studio-preview.png",
+      "bytes": 732692,
+      "sha256": "f458f7b94edd86e8e5756834890f86af64f21fee3dc718ef874fc5344f43f8b0"
+    },
+    {
+      "path": "duo-studio.html",
+      "bytes": 1916816,
+      "sha256": "26ab63b779bac4a23aafac0da1b1a9c30ec25ef1b7c527b7ada4980822894cf3"
+    },
+    {
+      "path": "package.json",
+      "bytes": 326,
+      "sha256": "2321156c73e15c667def62c85e701bb5e9e444ae97fde101ab92bd0c2876f63d"
+    },
+    {
+      "path": "requirements-assets.txt",
+      "bytes": 155,
+      "sha256": "17ec3ca37f32e8f33e738e378d6be8113bee491e4fafab34002a28e55b257806"
+    },
+    {
+      "path": "requirements-dev.txt",
+      "bytes": 99,
+      "sha256": "82deab59db8afe4f66094eeffb92b451ce3bc191af6f59b58047121dcbe56ae7"
+    },
+    {
+      "path": "screenshots/01-launcher.png",
+      "bytes": 732692,
+      "sha256": "f458f7b94edd86e8e5756834890f86af64f21fee3dc718ef874fc5344f43f8b0"
+    },
+    {
+      "path": "screenshots/02-conversation-canvas.png",
+      "bytes": 649221,
+      "sha256": "aaa773aedc3b28c7056c8005c0f269e13ddf1e257742d83889cf1a54dd7695b7"
+    },
+    {
+      "path": "screenshots/03-map-and-conversation.png",
+      "bytes": 649622,
+      "sha256": "55282a44f8d0352fbb9ee3a450d130f70861c04418cf1e1f7cbe91e4126f829a"
+    },
+    {
+      "path": "screenshots/04-gallery-and-detail.png",
+      "bytes": 776747,
+      "sha256": "beefadc51c7b29af2fca4c7970b7dff5bb57b26471774dd475895a1cb3821b06"
+    },
+    {
+      "path": "screenshots/05-film-and-notebook.png",
+      "bytes": 616294,
+      "sha256": "37195e5f3b75594893455e096ab347a6495593ade882e926799f6af725a9d3b1"
+    },
+    {
+      "path": "screenshots/06-direct-touch.png",
+      "bytes": 50011,
+      "sha256": "87cb8f841ca996bd96864cb67b5ca46d37f246d72053a8ecdd9e57147551c6b2"
+    },
+    {
+      "path": "screenshots/06-tabletop.png",
+      "bytes": 739766,
+      "sha256": "772ecd8da725da3f5db6ec489115ae42711e30546203d3dfccd0140959b4eaec"
+    },
+    {
+      "path": "screenshots/07-folded.png",
+      "bytes": 735005,
+      "sha256": "c97ed699d56c7a6c66c0e731129a3d503f8a5bc96b17e675be13307e1073e991"
+    },
+    {
+      "path": "screenshots/08-direct-touch.png",
+      "bytes": 114092,
+      "sha256": "331921940e83edd7bffe029e701e0ec978e8ec489fe8ef3bbb30e2201eefcf59"
+    },
+    {
+      "path": "scripts/build.py",
+      "bytes": 1820,
+      "sha256": "a2ebebf3f52faa258bfcd14e0a478a5c317323611de3e0a642a27a3b772eff32"
+    },
+    {
+      "path": "scripts/capture.py",
+      "bytes": 3225,
+      "sha256": "87efc243489d487cb90381bfa8be5d35845609cf754df13b6da1de486eddfdf9"
+    },
+    {
+      "path": "scripts/check.mjs",
+      "bytes": 3169,
+      "sha256": "de4c2d46488f7580c6cc7d57544cef273325804d2b07f672afe69ad0a0b486ce"
+    },
+    {
+      "path": "scripts/generate_assets.py",
+      "bytes": 6326,
+      "sha256": "d2760d759da4da3cfa91532df2d77a2925f3d5a24a31886d9405fa63d5b73751"
+    },
+    {
+      "path": "scripts/package.py",
+      "bytes": 2359,
+      "sha256": "2a2282fab515c4d50489d627eee39b5e91d39c2fb7f3c33528245f3e701cdf59"
+    },
+    {
+      "path": "scripts/package_repository.py",
+      "bytes": 3418,
+      "sha256": "6f175b562a3011e47313e2ba19810cfb9b97cdabe35c3b453485c325fe2530b6"
+    },
+    {
+      "path": "scripts/serve.py",
+      "bytes": 1406,
+      "sha256": "31ccf891035fc590e8fbea03380396f2e4b9eba5929909cc2e9b36b66761599b"
+    },
+    {
+      "path": "src/apps/chatgpt.js",
+      "bytes": 6694,
+      "sha256": "53e67209720f1827ed7f4127f0e1aceb7a3e6b54e731ebcb2d38ad022f469495"
+    },
+    {
+      "path": "src/apps/gemini.js",
+      "bytes": 10870,
+      "sha256": "7aaeb6b997f5a0e92db13f379d7ec32cb6a573f47b00e201ed1d6b7d02f23a19"
+    },
+    {
+      "path": "src/apps/gmail.js",
+      "bytes": 10073,
+      "sha256": "8f2fa1d7106c533dc73e1cd83db7e440325a42be31093e7b8c2bd90dc67353e9"
+    },
+    {
+      "path": "src/apps/google.js",
+      "bytes": 5893,
+      "sha256": "d3eb00c2144c7fdcc9564401dc977638863a5a79052ccfea236b827f38766e11"
+    },
+    {
+      "path": "src/apps/instagram.js",
+      "bytes": 9710,
+      "sha256": "56b317bb77088af97ae2bfc9019c978cbe600210d2b5beb1848764bbc68c8452"
+    },
+    {
+      "path": "src/apps/maps.js",
+      "bytes": 15764,
+      "sha256": "cee915ff4e366be369b9d6267a44ddd004b817350e16c74fa365bdb8b9dcd263"
+    },
+    {
+      "path": "src/apps/threads.js",
+      "bytes": 9197,
+      "sha256": "f6656bee7c1ff4d152f374300f5040d189b9acbf880b944c9fae12dec45fe340"
+    },
+    {
+      "path": "src/apps/tiktok.js",
+      "bytes": 8218,
+      "sha256": "e5b07a2aff00ef01e216005f65f22c46e0774dbe1f12e06d3e6a64a005036581"
+    },
+    {
+      "path": "src/apps/whatsapp.js",
+      "bytes": 11775,
+      "sha256": "beb8ca80c49500e60b28c68c5011716877d666660292f6124fc2772da54e5066"
+    },
+    {
+      "path": "src/apps/youtube.js",
+      "bytes": 12071,
+      "sha256": "9861996a9be9e58510c7b4178c1249b90957875ae0f2f8b2e608348886d95d15"
+    },
+    {
+      "path": "src/core.js",
+      "bytes": 15463,
+      "sha256": "725c31b0895e47934f2d29c290568219229cdc23f862813c36577ba6a28c827e"
+    },
+    {
+      "path": "src/data.js",
+      "bytes": 16585,
+      "sha256": "f970a5d85af1659b9c6bec86a48b4bf0060146a150074898e7f53500d38e1f32"
+    },
+    {
+      "path": "src/gpu.js",
+      "bytes": 9152,
+      "sha256": "9d6b41e0c6f730593ad8e876ba322d1e18dad16d575d5f1bc878e72566d65919"
+    },
+    {
+      "path": "src/icons.js",
+      "bytes": 8786,
+      "sha256": "e4e5cff96e0ee98486c9485280a6e799dda08c0980c0edbb77f94fb88b29eb3f"
+    },
+    {
+      "path": "src/shell.js",
+      "bytes": 38584,
+      "sha256": "44845b9e556499e344d752b497e4e4d05fec481bb4b6053037af78adf2d25d32"
+    },
+    {
+      "path": "src/styles.css",
+      "bytes": 72088,
+      "sha256": "1aef166aef713d1973cb818ab5e476025c5a30d8afd2a60271d4f3eb3045c5a1"
+    },
+    {
+      "path": "src/template.html",
+      "bytes": 6009,
+      "sha256": "6b65cdd0dfd5e5848fe6d92923bc9c28f2a338679c57ea5f7e27c69d9af6aac4"
+    },
+    {
+      "path": "tests/browser-report.json",
+      "bytes": 5426,
+      "sha256": "e4958d16b86a917186d1e9f95a9d128518b2c59202003efd66f7b6d90a752d47"
+    },
+    {
+      "path": "tests/static-report.json",
+      "bytes": 2334,
+      "sha256": "9ee262d87ef9d241e1e8ce7eb6d90c88c9c901bcaea04734b6eef84e3e26bebe"
+    },
+    {
+      "path": "tests/test_browser.py",
+      "bytes": 17493,
+      "sha256": "10dffd3e96d07626cc0e7ea90645d1453a1ad8fe27b50a87368f17ec8cecf082"
+    }
+  ]
+}

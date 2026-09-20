@@ -1,0 +1,2 @@
+# Optional browser testing and screenshot capture; not needed to run or build.
+playwright>=1.48,<2

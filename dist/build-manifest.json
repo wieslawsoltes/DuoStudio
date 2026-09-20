@@ -1,0 +1,34 @@
+{
+  "version": "1.0.0",
+  "htmlBytes": 1916816,
+  "sha256": "26ab63b779bac4a23aafac0da1b1a9c30ec25ef1b7c527b7ada4980822894cf3",
+  "assets": {
+    "alpine.jpg": 118339,
+    "alpine.mp4": 421138,
+    "arches.jpg": 84735,
+    "coast.jpg": 107671,
+    "coast.mp4": 355342,
+    "dunes.jpg": 93443,
+    "dunes.mp4": 299330,
+    "golden.jpg": 92079,
+    "orbital.jpg": 77175
+  },
+  "sources": [
+    "icons.js",
+    "core.js",
+    "data.js",
+    "gpu.js",
+    "apps/chatgpt.js",
+    "apps/threads.js",
+    "apps/google.js",
+    "apps/tiktok.js",
+    "apps/whatsapp.js",
+    "apps/instagram.js",
+    "apps/youtube.js",
+    "apps/maps.js",
+    "apps/gmail.js",
+    "apps/gemini.js",
+    "shell.js"
+  ],
+  "externalRuntimeDependencies": []
+}

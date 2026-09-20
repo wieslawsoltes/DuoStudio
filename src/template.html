@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#090b10">
+<meta name="description" content="Duo Studio: an independent, offline iPhone Duo form-factor simulator. Ten interactive app studies, one continuous canvas, WebGPU, and local-first workflows.">
+<title>Duo Studio — A little more possibility.</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23100f19'/%3E%3Crect x='13' y='15' width='17' height='35' rx='6' fill='%23c9adeb'/%3E%3Crect x='34' y='15' width='17' height='35' rx='6' fill='%238771b0'/%3E%3C/svg%3E">
+<style>/*__STYLES__*/</style>
+</head>
+<body>
+<header class="studio-topbar">
+ <div class="studio-logo"><span class="duo-symbol" aria-hidden="true"><i></i><i></i></span><b>duo <span>/ studio</span></b><small>THE FORM-FACTOR LAB</small></div>
+ <nav class="studio-actions" aria-label="Studio tools">
+  <div class="engine-badge" title="Backdrop renderer"><i></i><span id="engine-label">Starting renderer</span></div>
+  <button class="studio-guide" data-shell="guide" aria-label="Open guide"><span>Guide</span></button>
+  <button class="export-session" data-shell="export" aria-label="Export session"><span class="export-label">Export session</span></button>
+  <button class="highlight" data-shell="touch"><span id="touch-label">Direct touch</span></button>
+ </nav>
+</header>
+<section class="studio-intro"><div><h1>A little more screen. <span>A lot more possibility.</span></h1><p>Ten familiar apps, reimagined for one continuous canvas. Open up. Make room.</p></div><div class="intro-index"><div><strong>10</strong>interactive app studies</div><div><strong>7.6″</strong>of possibility</div></div></section>
+<main class="lab">
+ <div class="simulator-column">
+  <div class="stage" id="stage" aria-label="Interactive device simulator">
+   <div class="device-positioner" id="device-positioner"><div class="device" id="device"><div class="screen" id="screen" data-posture="open" data-orientation="landscape">
+    <canvas class="wallpaper" id="wallpaper" aria-hidden="true"></canvas>
+    <div class="status-bar"><div class="status-left"><span id="device-clock">9:41</span><span class="status-date">Sunday, September 20</span></div><button class="status-right" data-shell="control" aria-label="Open Control Center"><span>5G</span><span id="status-wireless"></span><span class="status-battery">100<span id="status-battery"></span></span></button></div>
+    <div class="home-view" id="home-view"></div>
+    <div class="workspace hidden" id="workspace" aria-label="App workspace"></div>
+    <button class="dynamic-island" data-shell="activity" aria-label="Open live activity"><span></span><span></span><span></span></button>
+    <nav class="side-dock" id="side-dock" aria-label="Device dock"></nav>
+    <button class="home-indicator" data-shell="home" aria-label="Return to Home Screen"></button>
+    <div class="crease" aria-hidden="true"></div><div class="screen-tint" id="screen-tint" aria-hidden="true"></div>
+    <div id="system-surface"></div>
+   </div></div></div>
+  </div>
+  <div class="stage-caption"><span id="posture-caption">7.6″ unfolded</span><i></i><span>One continuous display</span><i></i><span>Independent web prototype</span></div>
+  <div class="mobile-tools"><button data-shell="cycle-posture">Fold / unfold</button><button data-shell="rotate">Rotate</button><button data-shell="pair">Split View</button><button data-shell="control">Controls</button></div>
+ </div>
+ <aside class="lab-inspector" aria-label="Simulator controls">
+  <section class="lab-panel">
+   <h2>Device posture <span>iPhone Duo study</span></h2>
+   <div class="posture-grid" id="posture-grid"></div>
+   <div class="hinge-control"><div class="hinge-label"><label for="hinge-angle">Hinge angle</label><strong id="angle-label">180°</strong></div><input id="hinge-angle" type="range" min="0" max="180" step="1" value="180" aria-label="Simulated hinge angle"></div>
+   <div class="lab-action-row"><button data-shell="rotate">Rotate</button><button data-shell="lock">Lock screen</button></div>
+   <div class="display-spec"><div><strong id="display-resolution">2670 × 1878</strong><small>reference pixels</small></div><div><strong id="display-size">7.6″</strong><small>inner display</small></div></div>
+  </section>
+  <section class="lab-panel active-app-card" id="active-app-card"></section>
+  <section class="lab-panel"><h2>Make it yours <span>Live wallpaper</span></h2><div class="palette-options" id="palette-options"></div><div class="toggle-row"><span>Dark app appearance</span><button class="switch" id="dark-toggle" data-shell="dark" role="switch" aria-checked="false" aria-label="Dark app appearance"></button></div><div class="toggle-row"><span>Reduce motion</span><button class="switch" id="motion-toggle" data-shell="motion" role="switch" aria-checked="false" aria-label="Reduce motion"></button></div></section>
+  <p class="inspector-footer">An interaction lab, not an iOS emulator.<br>All conversations and content are local.</p>
+ </aside>
+</main>
+<section class="app-shelf" aria-label="Ten app prototypes"><div class="shelf-header"><span class="eyebrow">YOUR EVERYDAY, UNFOLDED</span><span>Apple’s U.S. 2025 top free iPhone apps · prototype collection</span></div><div class="shelf-apps" id="shelf-apps"></div></section>
+<footer class="bottom-disclaimer">Independent design & engineering study. Not affiliated with Apple or the app providers. Original sample media. No accounts, tracking, or live-service connections.</footer>
+<dialog id="system-dialog" aria-label="Duo Studio dialog"></dialog>
+<div id="toast-host" class="toast-host" aria-live="polite"></div>
+<noscript><p style="padding:30px">Duo Studio needs JavaScript enabled. This self-contained file makes no network requests.</p></noscript>
+<script>/*__SCRIPTS__*/</script>
+</body>
+</html>
