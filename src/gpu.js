@@ -74,7 +74,7 @@ class GPUBackdrop{
   for(let layer=30;layer>=0;layer--){const a=layer/30;const shift=Math.sin(t*.7)*h*.035;c.beginPath();c.moveTo(-30,h*.48+shift);c.bezierCurveTo(w*.30,h*(1.1-a*.025),w*.54,-h*.16,w+30,h*.70+shift);c.lineTo(w+30,h+1);c.lineTo(-30,h+1);c.closePath();c.fillStyle=colors[2];c.globalAlpha=.014+(1-a)*.006;c.fill();}c.globalAlpha=1;
   const shade=c.createRadialGradient(w*.48,h*.4,0,w*.48,h*.4,w*.85);shade.addColorStop(0,'#00000000');shade.addColorStop(1,'#000000aa');c.fillStyle=shade;c.fillRect(0,0,w,h);
  }
- loop(ts){if(this.disposed)return;this.frame=requestAnimationFrame(t=>this.loop(t));const reduced=D.store.data.prefs.reducedMotion||matchMedia('(prefers-reduced-motion: reduce)').matches;const need=this.dirty||(!this.paused&&!reduced&&ts-this.last>1000/30);if(document.hidden||!need)return;this.time+=this.last?Math.min((ts-this.last)/1000,.1):0;this.last=ts;
+ loop(ts){if(this.disposed)return;this.frame=requestAnimationFrame(t=>this.loop(t));const reduced=D.store.data.prefs.reducedMotion||matchMedia('(prefers-reduced-motion: reduce)').matches;const need=this.dirty||(!this.paused&&!reduced&&ts-this.last>1000/(this.lowPower?12:30));if(document.hidden||!need)return;this.time+=this.last?Math.min((ts-this.last)/1000,.1):0;this.last=ts;
   try{if(this.dirty)this.resize();this.device?this.drawGPU():this.draw2D();this.dirty=false;}catch(e){this.fallback(e.message);}
  }
  invalidate(){this.dirty=true;}

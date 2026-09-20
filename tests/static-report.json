@@ -1,9 +1,25 @@
 {
-  "passed": 25,
+  "passed": 43,
   "failed": 0,
   "results": [
     {
+      "name": "JavaScript parses: src/apps/arcade.js",
+      "passed": true
+    },
+    {
       "name": "JavaScript parses: src/apps/chatgpt.js",
+      "passed": true
+    },
+    {
+      "name": "JavaScript parses: src/apps/cutroom.js",
+      "passed": true
+    },
+    {
+      "name": "JavaScript parses: src/apps/draftline.js",
+      "passed": true
+    },
+    {
+      "name": "JavaScript parses: src/apps/folio.js",
       "passed": true
     },
     {
@@ -19,11 +35,35 @@
       "passed": true
     },
     {
+      "name": "JavaScript parses: src/apps/gridsheet.js",
+      "passed": true
+    },
+    {
+      "name": "JavaScript parses: src/apps/inkpad.js",
+      "passed": true
+    },
+    {
       "name": "JavaScript parses: src/apps/instagram.js",
       "passed": true
     },
     {
+      "name": "JavaScript parses: src/apps/keydeck.js",
+      "passed": true
+    },
+    {
       "name": "JavaScript parses: src/apps/maps.js",
+      "passed": true
+    },
+    {
+      "name": "JavaScript parses: src/apps/polyform.js",
+      "passed": true
+    },
+    {
+      "name": "JavaScript parses: src/apps/pulse.js",
+      "passed": true
+    },
+    {
+      "name": "JavaScript parses: src/apps/scenelab.js",
       "passed": true
     },
     {
@@ -51,6 +91,30 @@
       "passed": true
     },
     {
+      "name": "JavaScript parses: src/engines/audio.js",
+      "passed": true
+    },
+    {
+      "name": "JavaScript parses: src/engines/formats.js",
+      "passed": true
+    },
+    {
+      "name": "JavaScript parses: src/engines/formula.js",
+      "passed": true
+    },
+    {
+      "name": "JavaScript parses: src/engines/geometry.js",
+      "passed": true
+    },
+    {
+      "name": "JavaScript parses: src/engines/renderer3d.js",
+      "passed": true
+    },
+    {
+      "name": "JavaScript parses: src/engines/studio.js",
+      "passed": true
+    },
+    {
       "name": "JavaScript parses: src/gpu.js",
       "passed": true
     },
@@ -63,7 +127,15 @@
       "passed": true
     },
     {
-      "name": "Exactly ten app modules",
+      "name": "JavaScript parses: src/system/everyday.js",
+      "passed": true
+    },
+    {
+      "name": "JavaScript parses: src/system/simulator.js",
+      "passed": true
+    },
+    {
+      "name": "Exactly twenty app modules",
       "passed": true
     },
     {

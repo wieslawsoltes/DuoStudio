@@ -32,7 +32,7 @@ for (const path of jsFiles) {
 }
 const html = readFileSync(join(root, 'dist/duo-studio.html'), 'utf8');
 const manifest = JSON.parse(readFileSync(join(root, 'dist/build-manifest.json'), 'utf8'));
-check('Exactly ten app modules', () => jsFiles.filter(path => path.includes('/apps/')).length === 10);
+check('Exactly twenty app modules', () => jsFiles.filter(path => path.includes('/apps/')).length === 20);
 check('No unresolved template placeholders', () => !/\/\*__(STYLES|SCRIPTS)__\*\//.test(html));
 check('No external script or stylesheet dependencies', () => !/<script\b[^>]*\bsrc\s*=|<link\b[^>]*\brel\s*=\s*["']stylesheet/i.test(html));
 check('Nine inline media assets', () => Object.keys(manifest.assets).length === 9);
