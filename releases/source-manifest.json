@@ -1,15 +1,10 @@
 {
-  "version": "2.0.0",
+  "version": "3.0.0",
   "files": [
     {
-      "path": ".github/workflows/import-creative.yml",
-      "bytes": 4179,
-      "sha256": "c83c1dfe6abf70aabb74a04f5b15e58accaf44747b39163c51586a6f1b5ec0c0"
-    },
-    {
       "path": ".github/workflows/pages.yml",
-      "bytes": 3162,
-      "sha256": "d6933a046f8b88b2cfbafd6a75d69cc92caf2fc839ff991c6f1f82917a38d43f"
+      "bytes": 3982,
+      "sha256": "748ddb672b8a3dc99b16371f4baedb9454c4839db06346aa31021d09f9eff713"
     },
     {
       "path": ".github/workflows/verify-pages.yml",
@@ -28,8 +23,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 8413,
-      "sha256": "193888af8241ce67848463e680f2881e2381cc1570f62b67510fd14dcdb126d8"
+      "bytes": 8708,
+      "sha256": "53600a25d0274410b1e524a879594bd59ba94fb0b29333fe129060c8be82c39e"
     },
     {
       "path": "assets/alpine.jpg",
@@ -83,13 +78,13 @@
     },
     {
       "path": "dist/build-manifest.json",
-      "bytes": 1171,
-      "sha256": "5169c022539758b1d02fdbc01135cf802fe034b7d85b9c1ad8d6191a1c50cf41"
+      "bytes": 1370,
+      "sha256": "d05c7b7065fd0d942ded45c7648b87cdda18e4d9865c8be7e5bde69e2ba7d688"
     },
     {
       "path": "dist/duo-studio.html",
-      "bytes": 2190742,
-      "sha256": "3c113a4e2c91699f1415323bfa0a3ca17715a27beecd8b54cb9e83b460b161fb"
+      "bytes": 3300250,
+      "sha256": "757c5d8e91fe672337422fef22d39254834babe2c9892670462721495a7d43ad"
     },
     {
       "path": "dist/icon-192.png",
@@ -103,8 +98,8 @@
     },
     {
       "path": "dist/index.html",
-      "bytes": 2190742,
-      "sha256": "3c113a4e2c91699f1415323bfa0a3ca17715a27beecd8b54cb9e83b460b161fb"
+      "bytes": 3300250,
+      "sha256": "757c5d8e91fe672337422fef22d39254834babe2c9892670462721495a7d43ad"
     },
     {
       "path": "dist/manifest.webmanifest",
@@ -114,7 +109,7 @@
     {
       "path": "dist/sw.js",
       "bytes": 1486,
-      "sha256": "089568b04c043a468e7597efc712e7b931b8aa4343d201cef26716911ce05b70"
+      "sha256": "94c15e1aef377c276cc610f61874a134d259fb4f04d25c58da25e8c60beb31e1"
     },
     {
       "path": "docs/ARCHITECTURE.md",
@@ -152,6 +147,11 @@
       "sha256": "fcd2885c1d3287d0e7ca58a55f9871788b728c6f8d63ff148912ff64b837b63e"
     },
     {
+      "path": "docs/SDK_IDE.md",
+      "bytes": 14685,
+      "sha256": "706817bfa0c492313b344527117c3fabf6838bece1645b4a0d375edba8b4a761"
+    },
+    {
       "path": "docs/SOURCES.md",
       "bytes": 1214,
       "sha256": "3a8a27f25dd1700b14c0dc64c63f0ac9cc7d9b27ec502dcc101ebbf6d0146073"
@@ -173,13 +173,13 @@
     },
     {
       "path": "duo-studio.html",
-      "bytes": 2190742,
-      "sha256": "3c113a4e2c91699f1415323bfa0a3ca17715a27beecd8b54cb9e83b460b161fb"
+      "bytes": 3300250,
+      "sha256": "757c5d8e91fe672337422fef22d39254834babe2c9892670462721495a7d43ad"
     },
     {
       "path": "package.json",
-      "bytes": 409,
-      "sha256": "7d567d4fcf8590978af681df4ef6a65c97ac85ad560b2e07a6975710920cd905"
+      "bytes": 456,
+      "sha256": "84d8e98a6ba73483f6f705a0e35350fe5ed554b41e1ad4c4ded6d9c9e3f27231"
     },
     {
       "path": "requirements-assets.txt",
@@ -218,8 +218,8 @@
     },
     {
       "path": "screenshots/06-direct-touch.png",
-      "bytes": 52392,
-      "sha256": "442e62b6fbe60f428281e5bc114322efc22cf31b47e6b6de4d6426ea0f72de33"
+      "bytes": 54485,
+      "sha256": "fb3a60640c32a2c7a6c67e2944f8e69671924acdc60a91ef21b1de4746533e16"
     },
     {
       "path": "screenshots/06-tabletop.png",
@@ -307,9 +307,34 @@
       "sha256": "a7c86f423311d2a35409aa1a188c399e6303451bd22d1c2b37b72aebe8a7cc40"
     },
     {
+      "path": "screenshots/v3-debugger.png",
+      "bytes": 264976,
+      "sha256": "81fe12d95130d9bf008323ec1a696c721a673a642e455bfd8852cb46dbc8770c"
+    },
+    {
+      "path": "screenshots/v3-designer.png",
+      "bytes": 312244,
+      "sha256": "116a72408887242556cd85ae78891a99e63f55293e3b8aaed23f79099bbda1d1"
+    },
+    {
+      "path": "screenshots/v3-music.png",
+      "bytes": 301955,
+      "sha256": "01fc679b3e9cf57a0760a78739348a4db7368291aa546294aa7c2ef34b2a5c54"
+    },
+    {
+      "path": "screenshots/v3-simulator.png",
+      "bytes": 745356,
+      "sha256": "99b03b461dd08e8c495b5ae7e0db633e2e17c4f3c88b58f85931e7dc2af03849"
+    },
+    {
+      "path": "screenshots/v3-source.png",
+      "bytes": 400630,
+      "sha256": "f2d9b7919006847c90702c4c6d47e2d44a997717fc84c44703e01e792531a622"
+    },
+    {
       "path": "scripts/build.py",
-      "bytes": 2160,
-      "sha256": "a36b91a04a19840ad58e5fd9d129f5c8f6636f69e5099bd0e62956c271345488"
+      "bytes": 2844,
+      "sha256": "69cb56019e736ab094c5e3c76b0cf92f387e38e572d8978e53776227c117f4cb"
     },
     {
       "path": "scripts/build_pwa.py",
@@ -327,14 +352,24 @@
       "sha256": "021df3c04535b97f0bd76e49c10445e28bcb92b0acdbcf8e731dbb6b9ece3565"
     },
     {
+      "path": "scripts/capture_v3.py",
+      "bytes": 2001,
+      "sha256": "3f95d6b635a0df0c3d4fd42ca2ffd87b6ba52176382c8a72a3798dd420a210df"
+    },
+    {
       "path": "scripts/check.mjs",
-      "bytes": 3172,
-      "sha256": "6490d38df83ebe3dfb744502ab20b41b28745f53790dbe5e7465427070f13fab"
+      "bytes": 3214,
+      "sha256": "11ce7650ea73606dd8e01f6212e98deabf1abb6cd9c26577b95755a8a626e6ce"
     },
     {
       "path": "scripts/generate_assets.py",
       "bytes": 6326,
       "sha256": "d2760d759da4da3cfa91532df2d77a2925f3d5a24a31886d9405fa63d5b73751"
+    },
+    {
+      "path": "scripts/migrate_sdk_apps.cjs",
+      "bytes": 1900,
+      "sha256": "ed770daf421239d4b8343c15e07c8eb6eae65a8b7f3d86d776d88167ddc757e9"
     },
     {
       "path": "scripts/package.py",
@@ -343,8 +378,8 @@
     },
     {
       "path": "scripts/package_repository.py",
-      "bytes": 2200,
-      "sha256": "ba14d5ac1969dbeb9440cf3e846ce0f44fd0d03d7a7257f7e554b46c0edc5ced"
+      "bytes": 2234,
+      "sha256": "5b697bc2661d07de767509b6b0acba9e5a0db5925e2753f75fa6975ad4a90737"
     },
     {
       "path": "scripts/serve.py",
@@ -353,113 +388,153 @@
     },
     {
       "path": "scripts/verify_pages.py",
-      "bytes": 2032,
-      "sha256": "d2414b8af36ba77e2401fbf2a9d9e626a178133c5e0882582c1cf0a00fbf106b"
+      "bytes": 2091,
+      "sha256": "e89d3b5b14a0fbec0ce58abbce487a34d74dee38c5f376eca8324a6e7c6a74a6"
+    },
+    {
+      "path": "sdk/LICENSE",
+      "bytes": 1353,
+      "sha256": "0874a943c6e271835c9d6b3dbf55c6537e958b4c9ce09131eca0746039a9a4bd"
+    },
+    {
+      "path": "sdk/README.md",
+      "bytes": 3768,
+      "sha256": "e0227dbe716d0cd3286a2fb305e3a84089568c388242c6e0c36a8f8ce3773151"
+    },
+    {
+      "path": "sdk/duokit.css",
+      "bytes": 934,
+      "sha256": "9a9cb9db1f4e8d9a0a8dda20ed5188efe7f2afbdc54a2cfdcf70efe05cfc6e0c"
+    },
+    {
+      "path": "sdk/duokit.js",
+      "bytes": 21940,
+      "sha256": "2bed8692c71072eae11f8ccee1f723b03ee01e8ea007ab266c87257bfa7b23c2"
+    },
+    {
+      "path": "sdk/host.js",
+      "bytes": 12316,
+      "sha256": "efd59fec569de7acb0cb526cf81f1efefd58c16b162790d7ab94b8b6f3f30209"
+    },
+    {
+      "path": "sdk/index.d.ts",
+      "bytes": 8019,
+      "sha256": "43c7f6133fc766fab52b6176fba67e8194dd956fc12977771c60838652b9be3c"
+    },
+    {
+      "path": "sdk/index.mjs",
+      "bytes": 596,
+      "sha256": "ef162637ef5e1219f0d1c3aa2106c0d9cee3efdc8e221be1de969c4f9021fd43"
+    },
+    {
+      "path": "sdk/package.json",
+      "bytes": 699,
+      "sha256": "093e3f84eb64225ba8515c7563d8ba00c9026b8a60e25490c38ac0f2e037015c"
     },
     {
       "path": "src/apps/arcade.js",
-      "bytes": 12390,
-      "sha256": "ac67d887dcb6861969a8bed29ac387d02a5918043e38604eb94ee19394d4863d"
+      "bytes": 17627,
+      "sha256": "5f596433e7d58134acab534d28f43f565c4bb7b59020a40e12eb8c445039c811"
     },
     {
       "path": "src/apps/chatgpt.js",
-      "bytes": 6694,
-      "sha256": "53e67209720f1827ed7f4127f0e1aceb7a3e6b54e731ebcb2d38ad022f469495"
+      "bytes": 7803,
+      "sha256": "e5ca74f1f64ad3b68c4f2299cd99d3bf89158717d2a5c09c1c9e9bd8fc0dc72f"
     },
     {
       "path": "src/apps/cutroom.js",
-      "bytes": 17383,
-      "sha256": "851cd1667398781de23d0cf2d09f495b576bb75f684fea5920ea13bc8061f17a"
+      "bytes": 22690,
+      "sha256": "4fc8cd67863ca624e611cbac1c44d63d67041d122db4e8b56b113aa359871131"
     },
     {
       "path": "src/apps/draftline.js",
-      "bytes": 15914,
-      "sha256": "9807cdc2136e3516848b7c8ce087418445224cf1a1e85f4d383e25af7b1fde7e"
+      "bytes": 21848,
+      "sha256": "6f3bda8de97993549cbd8ebf31dbc3f890cf031ba0acec8e55a30e41e7431840"
     },
     {
       "path": "src/apps/folio.js",
-      "bytes": 10982,
-      "sha256": "4bffc285ee3298eb94de48bb5f87521f80c20edc9ccc2d859bbd67d7adf58614"
+      "bytes": 13271,
+      "sha256": "95acc826cf3e0380565792685be8ef931c0b8e3c6422e62857ed4e471f1b3fdd"
     },
     {
       "path": "src/apps/gemini.js",
-      "bytes": 10870,
-      "sha256": "7aaeb6b997f5a0e92db13f379d7ec32cb6a573f47b00e201ed1d6b7d02f23a19"
+      "bytes": 12204,
+      "sha256": "0b42179bca4c4fd4a08340842ade8a52a25cea460d0783492f8acf0dbb7cfcf7"
     },
     {
       "path": "src/apps/gmail.js",
-      "bytes": 10073,
-      "sha256": "8f2fa1d7106c533dc73e1cd83db7e440325a42be31093e7b8c2bd90dc67353e9"
+      "bytes": 11759,
+      "sha256": "81e431506a1082c8c33bc8445c4683e00cae738be7d83d8516ef607bb0ec4f92"
     },
     {
       "path": "src/apps/google.js",
-      "bytes": 5893,
-      "sha256": "d3eb00c2144c7fdcc9564401dc977638863a5a79052ccfea236b827f38766e11"
+      "bytes": 6642,
+      "sha256": "8a753cd1208cd9c4ee344c8d49a5763990f6fe614dc6f642f1f96c94c94c24a0"
     },
     {
       "path": "src/apps/gridsheet.js",
-      "bytes": 14155,
-      "sha256": "c1b2d5e755aa66251020a834e2f11cf2515528d83308afe91f78bb8584cf1490"
+      "bytes": 17896,
+      "sha256": "9958695373bede7cc2486947625a942412f7569cb290d13f06f069dc199f4c01"
     },
     {
       "path": "src/apps/inkpad.js",
-      "bytes": 13315,
-      "sha256": "3af024e4a5fb0d4e20ab7ac00a13f9cf995553015c78a4e4894c4d9f3f8c1426"
+      "bytes": 17262,
+      "sha256": "4b3c47d0e2f840544bb9a2714bb2a89c1048ff0f7526b82776d18a69871409e3"
     },
     {
       "path": "src/apps/instagram.js",
-      "bytes": 9710,
-      "sha256": "56b317bb77088af97ae2bfc9019c978cbe600210d2b5beb1848764bbc68c8452"
+      "bytes": 11229,
+      "sha256": "969775bec42b29f838fb71d6e47393c5e767ab4c5cce58621898dfd874e65582"
     },
     {
       "path": "src/apps/keydeck.js",
-      "bytes": 11483,
-      "sha256": "5f29f686ac6eb665662ba89497b6df91495f2c99725082dcaa6977594bbdc19a"
+      "bytes": 13208,
+      "sha256": "b006de0eb9976e24f8bc3f057597833d4407c5b50c95d052668056c10d15a6b7"
     },
     {
       "path": "src/apps/maps.js",
-      "bytes": 15764,
-      "sha256": "cee915ff4e366be369b9d6267a44ddd004b817350e16c74fa365bdb8b9dcd263"
+      "bytes": 18786,
+      "sha256": "d02dffce6008e93a9ce1b5216e780428e04bacfa5fc01bc792c189e618532c2a"
     },
     {
       "path": "src/apps/polyform.js",
-      "bytes": 8201,
-      "sha256": "addaf25719fb527a496de8e328adbf8a65a71a3c6d2e5399b1347b4dacf2e2d5"
+      "bytes": 10016,
+      "sha256": "85dedcd4f3d04e952a9574d7d8b3af36379ea9aaa3fcf605518ab17c5bfbb5d6"
     },
     {
       "path": "src/apps/pulse.js",
-      "bytes": 9153,
-      "sha256": "29563f20fb6035cb681562446e3df3b9b321bd08d04e5236a36b5a0581863fec"
+      "bytes": 11180,
+      "sha256": "ffe195c9621c4bfd0cf605ad0696fbefb32b4ed994ab6249e64e8851f945638e"
     },
     {
       "path": "src/apps/scenelab.js",
-      "bytes": 7334,
-      "sha256": "2934c78ab33772b9455214714cbfd4ab06403558dfb00331f29f3cb6bfbc258f"
+      "bytes": 8914,
+      "sha256": "e3fc97ed5e34f6078f8d3729ac1060fb909a706f8ab63162cb728e45ba7d6ec3"
     },
     {
       "path": "src/apps/threads.js",
-      "bytes": 9197,
-      "sha256": "f6656bee7c1ff4d152f374300f5040d189b9acbf880b944c9fae12dec45fe340"
+      "bytes": 10257,
+      "sha256": "512d50ad96fe4646c28749ebf6fb70ff7e4b993d2adfbac23e8b4bf63409237d"
     },
     {
       "path": "src/apps/tiktok.js",
-      "bytes": 8218,
-      "sha256": "e5b07a2aff00ef01e216005f65f22c46e0774dbe1f12e06d3e6a64a005036581"
+      "bytes": 9870,
+      "sha256": "14366a239d7b919479475253ca587e62e0238d331ce66b1e1bca41ba1c2ba184"
     },
     {
       "path": "src/apps/whatsapp.js",
-      "bytes": 11775,
-      "sha256": "beb8ca80c49500e60b28c68c5011716877d666660292f6124fc2772da54e5066"
+      "bytes": 14148,
+      "sha256": "5e15dd8b3e102d7e76e8d726d53dd1187054853d0f05b7cb4d0c7b77f5a18ace"
     },
     {
       "path": "src/apps/youtube.js",
-      "bytes": 12071,
-      "sha256": "9861996a9be9e58510c7b4178c1249b90957875ae0f2f8b2e608348886d95d15"
+      "bytes": 14286,
+      "sha256": "194e5b8f255d6167b97353d91dd78b2a0fc135bedf83827458c056418f3e8401"
     },
     {
       "path": "src/core.js",
-      "bytes": 23854,
-      "sha256": "b2052361ba7d8cfff7c2cb0aa212d17f1a8573271e56512b94c434b6446c95ea"
+      "bytes": 21719,
+      "sha256": "9ea19a0e3dde13cc92860d6318128123dc873ee80898bec072047967d00b4238"
     },
     {
       "path": "src/data.js",
@@ -493,8 +568,8 @@
     },
     {
       "path": "src/engines/studio.js",
-      "bytes": 11216,
-      "sha256": "bbff346a2332f966a0e6e6eaef5c2925d8f939283239312e9f52b4bbef1a1cbb"
+      "bytes": 7864,
+      "sha256": "0a68bc405582272e76b3bc020c8f67016600c4cdcc84142b9c9b1625bd57897f"
     },
     {
       "path": "src/gpu.js",
@@ -507,9 +582,34 @@
       "sha256": "e4e5cff96e0ee98486c9485280a6e799dda08c0980c0edbb77f94fb88b29eb3f"
     },
     {
+      "path": "src/ide/ide.css",
+      "bytes": 21684,
+      "sha256": "f537611b248f83911d8e6b5adc7a31ee8933549614b5b45d0f70801c6c9755cd"
+    },
+    {
+      "path": "src/ide/ide.js",
+      "bytes": 67284,
+      "sha256": "0e96d2dc99bd73986d5c3807b64d9db8c00579967fa10d02b72c93ec75f949ce"
+    },
+    {
+      "path": "src/ide/preview.css",
+      "bytes": 818,
+      "sha256": "d6774fd5eb7a08f5688775980b5e0881348e74d3b65cac88b5f53aaed2bcd7c5"
+    },
+    {
+      "path": "src/ide/project.js",
+      "bytes": 22465,
+      "sha256": "af84a90fadbd1ada451904af92bc21a93dcb24bb79ab25406a0ff617130083ec"
+    },
+    {
+      "path": "src/ide/runtime.js",
+      "bytes": 23612,
+      "sha256": "85a00eeef42ecd20e1e46b44a2e40c48f8fade6ca32515ae700f85e9a2601803"
+    },
+    {
       "path": "src/shell.js",
-      "bytes": 40896,
-      "sha256": "4aad74b40e858298baeb7e11fe760e6e9aae0a82870be60558c0f4233cd87f9e"
+      "bytes": 41042,
+      "sha256": "413073fc6dc382421c8a01cd0384a4b8ff1e784af7bf9445fd548a8cd772598f"
     },
     {
       "path": "src/studio.css",
@@ -528,28 +628,43 @@
     },
     {
       "path": "src/system/simulator.js",
-      "bytes": 41751,
-      "sha256": "9a349082a03b42bed9485449d7508ce12020a383d5e26e1ad123daeca0379899"
+      "bytes": 41859,
+      "sha256": "eaa13f658762668c88735e26118814c703eb4fc8d479e2de7fd427e25eb72851"
     },
     {
       "path": "src/template.html",
-      "bytes": 5992,
-      "sha256": "a01b1b20235ffbcff721e9f94884a1a6dc69f855ec14d7971287527ba0542570"
+      "bytes": 6081,
+      "sha256": "4d1d4e8fa2fdfa84ddcbbf446dd7b2c23bdcfb123aff4aa6a90080783715571d"
     },
     {
       "path": "tests/browser-report.json",
-      "bytes": 5434,
-      "sha256": "c2a6de1d4e24701189ff222b50e072ddcc0054acbc2094abc64bc4d7d0d7049f"
+      "bytes": 5432,
+      "sha256": "caca8df67ad80883b689d2b813e3e1f28c933903231d4770de04ea65a007abe0"
     },
     {
       "path": "tests/creative-report.json",
-      "bytes": 8787,
-      "sha256": "e74414eb787e2c56e9a1daa2ab00842b353a0f58686625e0f239736833a4bba3"
+      "bytes": 8781,
+      "sha256": "4f0783c5a2cfdebdf3f9246e92e9cc479bd6c681d514cc070d06f987f472ccff"
+    },
+    {
+      "path": "tests/hosted-report.json",
+      "bytes": 1287,
+      "sha256": "f724787c173b5bd393c7800f31ad4e621897d408918c653203fd834245ccd463"
+    },
+    {
+      "path": "tests/ide-report.json",
+      "bytes": 6715,
+      "sha256": "32475b9820ce724af4817becd9a9e11fa7f97062208a7ec8002ad26d0c35cf26"
+    },
+    {
+      "path": "tests/sdk-report.json",
+      "bytes": 1774,
+      "sha256": "3438f4ce90364757e91eee3b8fe5e76fb93adbe8884998924cf8628a86229961"
     },
     {
       "path": "tests/static-report.json",
-      "bytes": 3983,
-      "sha256": "fbc8fe6aef8dd090411d8fde2218323e56dedcef670784fff84c3161ce676668"
+      "bytes": 4246,
+      "sha256": "1d93bb85082f8d4df6cf861c3633b18af27006462d884edd84dbe273d199118d"
     },
     {
       "path": "tests/test_browser.py",
@@ -563,8 +678,128 @@
     },
     {
       "path": "tests/test_hosted.py",
-      "bytes": 5003,
-      "sha256": "b3d0e02e9bbd290de4e41cd664bbbbf0c575369c71de77d980cdcf17cd4398f3"
+      "bytes": 6854,
+      "sha256": "100aab6835b6d02952392cd56b80e6e05d246f166fd9f1a6d1613d8691968d21"
+    },
+    {
+      "path": "tests/test_ide.py",
+      "bytes": 17404,
+      "sha256": "89f03e9ceb8161982de56aac2bfa5d5c484667a40e56a1cbb4037331525e8ad1"
+    },
+    {
+      "path": "tests/test_sdk.mjs",
+      "bytes": 5221,
+      "sha256": "b01c266d8b0fbc5ce31adc4b9b82c558f4a9de078c821f415c7ddb46f1db6f6a"
+    },
+    {
+      "path": "vendor/ACORN-LICENSE",
+      "bytes": 1099,
+      "sha256": "76a876cf886ff9be2a8b5e2e86514fed06223c8c9f0c1e9ee9606e93841e00b7"
+    },
+    {
+      "path": "vendor/acorn.js",
+      "bytes": 241575,
+      "sha256": "fdb08546776ec6228b03e8d02b40d4ab3255bae5f401adba7ff5dad927ac5c9c"
+    },
+    {
+      "path": "views/arcade.layout.json",
+      "bytes": 36,
+      "sha256": "a3c6fd5df8bb926c11d488f2b85546b28e9fb201a2aba4f926b7d17cd5f21f69"
+    },
+    {
+      "path": "views/chatgpt.layout.json",
+      "bytes": 36,
+      "sha256": "a3c6fd5df8bb926c11d488f2b85546b28e9fb201a2aba4f926b7d17cd5f21f69"
+    },
+    {
+      "path": "views/cutroom.layout.json",
+      "bytes": 36,
+      "sha256": "a3c6fd5df8bb926c11d488f2b85546b28e9fb201a2aba4f926b7d17cd5f21f69"
+    },
+    {
+      "path": "views/draftline.layout.json",
+      "bytes": 36,
+      "sha256": "a3c6fd5df8bb926c11d488f2b85546b28e9fb201a2aba4f926b7d17cd5f21f69"
+    },
+    {
+      "path": "views/folio.layout.json",
+      "bytes": 36,
+      "sha256": "a3c6fd5df8bb926c11d488f2b85546b28e9fb201a2aba4f926b7d17cd5f21f69"
+    },
+    {
+      "path": "views/gemini.layout.json",
+      "bytes": 36,
+      "sha256": "a3c6fd5df8bb926c11d488f2b85546b28e9fb201a2aba4f926b7d17cd5f21f69"
+    },
+    {
+      "path": "views/gmail.layout.json",
+      "bytes": 36,
+      "sha256": "a3c6fd5df8bb926c11d488f2b85546b28e9fb201a2aba4f926b7d17cd5f21f69"
+    },
+    {
+      "path": "views/google.layout.json",
+      "bytes": 36,
+      "sha256": "a3c6fd5df8bb926c11d488f2b85546b28e9fb201a2aba4f926b7d17cd5f21f69"
+    },
+    {
+      "path": "views/gridsheet.layout.json",
+      "bytes": 36,
+      "sha256": "a3c6fd5df8bb926c11d488f2b85546b28e9fb201a2aba4f926b7d17cd5f21f69"
+    },
+    {
+      "path": "views/inkpad.layout.json",
+      "bytes": 36,
+      "sha256": "a3c6fd5df8bb926c11d488f2b85546b28e9fb201a2aba4f926b7d17cd5f21f69"
+    },
+    {
+      "path": "views/instagram.layout.json",
+      "bytes": 36,
+      "sha256": "a3c6fd5df8bb926c11d488f2b85546b28e9fb201a2aba4f926b7d17cd5f21f69"
+    },
+    {
+      "path": "views/keydeck.layout.json",
+      "bytes": 36,
+      "sha256": "a3c6fd5df8bb926c11d488f2b85546b28e9fb201a2aba4f926b7d17cd5f21f69"
+    },
+    {
+      "path": "views/maps.layout.json",
+      "bytes": 36,
+      "sha256": "a3c6fd5df8bb926c11d488f2b85546b28e9fb201a2aba4f926b7d17cd5f21f69"
+    },
+    {
+      "path": "views/polyform.layout.json",
+      "bytes": 36,
+      "sha256": "a3c6fd5df8bb926c11d488f2b85546b28e9fb201a2aba4f926b7d17cd5f21f69"
+    },
+    {
+      "path": "views/pulse.layout.json",
+      "bytes": 36,
+      "sha256": "a3c6fd5df8bb926c11d488f2b85546b28e9fb201a2aba4f926b7d17cd5f21f69"
+    },
+    {
+      "path": "views/scenelab.layout.json",
+      "bytes": 36,
+      "sha256": "a3c6fd5df8bb926c11d488f2b85546b28e9fb201a2aba4f926b7d17cd5f21f69"
+    },
+    {
+      "path": "views/threads.layout.json",
+      "bytes": 36,
+      "sha256": "a3c6fd5df8bb926c11d488f2b85546b28e9fb201a2aba4f926b7d17cd5f21f69"
+    },
+    {
+      "path": "views/tiktok.layout.json",
+      "bytes": 36,
+      "sha256": "a3c6fd5df8bb926c11d488f2b85546b28e9fb201a2aba4f926b7d17cd5f21f69"
+    },
+    {
+      "path": "views/whatsapp.layout.json",
+      "bytes": 36,
+      "sha256": "a3c6fd5df8bb926c11d488f2b85546b28e9fb201a2aba4f926b7d17cd5f21f69"
+    },
+    {
+      "path": "views/youtube.layout.json",
+      "bytes": 36,
+      "sha256": "a3c6fd5df8bb926c11d488f2b85546b28e9fb201a2aba4f926b7d17cd5f21f69"
     }
   ]
 }

@@ -1,0 +1,247 @@
+{
+  "passed": 60,
+  "failed": 0,
+  "results": [
+    {
+      "test": "All twenty apps register through extracted DuoKit host adapter",
+      "passed": true
+    },
+    {
+      "test": "SDK core mounts outside simulator and preserves keyed DOM and focus",
+      "passed": true
+    },
+    {
+      "test": "Core views implement real two-way form bindings",
+      "passed": true
+    },
+    {
+      "test": "Full IDE builds real SDK preview from embedded source without downloads",
+      "passed": true
+    },
+    {
+      "test": "Preview is an opaque sandbox without same-origin or network privileges",
+      "passed": true
+    },
+    {
+      "test": "Preview mounts working CAD geometry, not screenshot content",
+      "passed": true
+    },
+    {
+      "test": "chatgpt: edited source executes and SDK context mounts",
+      "passed": true
+    },
+    {
+      "test": "threads: edited source executes and SDK context mounts",
+      "passed": true
+    },
+    {
+      "test": "google: edited source executes and SDK context mounts",
+      "passed": true
+    },
+    {
+      "test": "tiktok: edited source executes and SDK context mounts",
+      "passed": true
+    },
+    {
+      "test": "whatsapp: edited source executes and SDK context mounts",
+      "passed": true
+    },
+    {
+      "test": "instagram: edited source executes and SDK context mounts",
+      "passed": true
+    },
+    {
+      "test": "youtube: edited source executes and SDK context mounts",
+      "passed": true
+    },
+    {
+      "test": "maps: edited source executes and SDK context mounts",
+      "passed": true
+    },
+    {
+      "test": "gmail: edited source executes and SDK context mounts",
+      "passed": true
+    },
+    {
+      "test": "gemini: edited source executes and SDK context mounts",
+      "passed": true
+    },
+    {
+      "test": "draftline: edited source executes and SDK context mounts",
+      "passed": true
+    },
+    {
+      "test": "scenelab: edited source executes and SDK context mounts",
+      "passed": true
+    },
+    {
+      "test": "polyform: edited source executes and SDK context mounts",
+      "passed": true
+    },
+    {
+      "test": "pulse: edited source executes and SDK context mounts",
+      "passed": true
+    },
+    {
+      "test": "cutroom: edited source executes and SDK context mounts",
+      "passed": true
+    },
+    {
+      "test": "folio: edited source executes and SDK context mounts",
+      "passed": true
+    },
+    {
+      "test": "gridsheet: edited source executes and SDK context mounts",
+      "passed": true
+    },
+    {
+      "test": "keydeck: edited source executes and SDK context mounts",
+      "passed": true
+    },
+    {
+      "test": "inkpad: edited source executes and SDK context mounts",
+      "passed": true
+    },
+    {
+      "test": "arcade: edited source executes and SDK context mounts",
+      "passed": true
+    },
+    {
+      "test": "Invalid source fails with diagnostic while last working preview survives",
+      "passed": true
+    },
+    {
+      "test": "Source undo/redo restores file bytes",
+      "passed": true
+    },
+    {
+      "test": "Workspace rejects traversal and malformed embedded source",
+      "passed": true
+    },
+    {
+      "test": "Imperative-app visual edits change live UI and editable layout source",
+      "passed": true
+    },
+    {
+      "test": "Visual layout edits survive complete source rebuild",
+      "passed": true
+    },
+    {
+      "test": "New app template installs in launcher with editable code and view documents",
+      "passed": true
+    },
+    {
+      "test": "New application commands mutate real state and update rendered text",
+      "passed": true
+    },
+    {
+      "test": "Editing JavaScript changes command behavior and retains runtime data across rebuild",
+      "passed": true
+    },
+    {
+      "test": "WYSIWYG text changes round-trip to native view JSON and render immediately",
+      "passed": true
+    },
+    {
+      "test": "Visual action connections change actual button behavior",
+      "passed": true
+    },
+    {
+      "test": "Native view binding updates shared model and dependent label",
+      "passed": true
+    },
+    {
+      "test": "Component insertion creates real SDK view and persists readable descriptor",
+      "passed": true
+    },
+    {
+      "test": "Two-way view-document edits survive a complete rebuild",
+      "passed": true
+    },
+    {
+      "test": "Hierarchy reordering round-trips to view-source order",
+      "passed": true
+    },
+    {
+      "test": "Duplicating a view preserves properties with unique stable identities",
+      "passed": true
+    },
+    {
+      "test": "Deleting a view removes its actual descriptor and live DOM",
+      "passed": true
+    },
+    {
+      "test": "Project filesystem bytes survive rebuilding into a new sandbox",
+      "passed": true
+    },
+    {
+      "test": "Browser debugger sees named, editable original source files",
+      "passed": true
+    },
+    {
+      "test": "Runtime startup exceptions preserve last good running app",
+      "passed": true
+    },
+    {
+      "test": "Full simulator restores device enclosure and folding controls",
+      "passed": true
+    },
+    {
+      "test": "IDE/simulator switching preserves iframe realm and application state",
+      "passed": true
+    },
+    {
+      "test": "All preview sizes retain running application instance",
+      "passed": true
+    },
+    {
+      "test": "Command breakpoint suspends before application mutation",
+      "passed": true
+    },
+    {
+      "test": "Watch expressions evaluate paused state in preview only",
+      "passed": true
+    },
+    {
+      "test": "Step runs the command then suspends with updated state",
+      "passed": true
+    },
+    {
+      "test": "Explicit awaited checkpoints expose application locals and stack",
+      "passed": true
+    },
+    {
+      "test": "Variables editor applies validated model through SDK restore",
+      "passed": true
+    },
+    {
+      "test": "Forged preview messages cannot mutate host selection/state",
+      "passed": true
+    },
+    {
+      "test": "Source compilation safely embeds script terminators and replacement metacharacters",
+      "passed": true
+    },
+    {
+      "test": "Native JavaScript debugger pauses and inspects actual application registry",
+      "passed": true
+    },
+    {
+      "test": "Standalone edited export runs independently with persisted design and model",
+      "passed": true
+    },
+    {
+      "test": "Workspace JSON round trip retains source, view and resources",
+      "passed": true
+    },
+    {
+      "test": "Stop destroys the runtime iframe",
+      "passed": true
+    },
+    {
+      "test": "No unexpected JavaScript exceptions",
+      "passed": true
+    }
+  ],
+  "pageErrors": []
+}

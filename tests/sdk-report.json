@@ -1,0 +1,70 @@
+{
+  "passed": 16,
+  "failed": 0,
+  "results": [
+    {
+      "test": "ESM and CommonJS expose the same independent runtime",
+      "passed": true
+    },
+    {
+      "test": "State projected and mapped binding preserve sibling properties",
+      "passed": true
+    },
+    {
+      "test": "State subscriptions unsubscribe and ignore equal identity",
+      "passed": true
+    },
+    {
+      "test": "Nested batches coalesce dependent effects",
+      "passed": true
+    },
+    {
+      "test": "Conditional dependencies detach when branch changes",
+      "passed": true
+    },
+    {
+      "test": "Computed binding is read-only and disposable",
+      "passed": true
+    },
+    {
+      "test": "Constant bindings reject mutations by retaining original value",
+      "passed": true
+    },
+    {
+      "test": "Scopes cancel events and children once in reverse ownership order",
+      "passed": true
+    },
+    {
+      "test": "Owned timers cannot outlive a disposed scope",
+      "passed": true
+    },
+    {
+      "test": "Environment children inherit then override reactive values",
+      "passed": true
+    },
+    {
+      "test": "UndoManager retains snapshots, supports redo and rolls back exceptions",
+      "passed": true
+    },
+    {
+      "test": "No-op transactions do not consume undo history",
+      "passed": true
+    },
+    {
+      "test": "Fluent view modifiers leave original descriptors unchanged",
+      "passed": true
+    },
+    {
+      "test": "Validated declarative views compile bindings and named actions",
+      "passed": true
+    },
+    {
+      "test": "View documents reject duplicate IDs and unknown components",
+      "passed": true
+    },
+    {
+      "test": "Data validation rejects pollution keys and nonfinite values",
+      "passed": true
+    }
+  ]
+}

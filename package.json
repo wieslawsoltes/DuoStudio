@@ -1,13 +1,13 @@
 {
   "name": "duo-studio",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "private": true,
-  "description": "Offline creative studio and foldable-device simulator with twenty apps and WebGPU",
+  "description": "Offline twenty-app simulator, reusable DuoKit SDK and live developer IDE",
   "license": "MIT",
   "scripts": {
     "build": "python3 scripts/build.py",
     "start": "python3 scripts/serve.py",
     "check": "node scripts/check.mjs",
-    "test": "python3 tests/test_browser.py && python3 tests/test_creative.py"
+    "test": "node tests/test_sdk.mjs && python3 tests/test_browser.py && python3 tests/test_creative.py && python3 tests/test_ide.py"
   }
 }

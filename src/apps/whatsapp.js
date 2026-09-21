@@ -1,24 +1,108 @@
-(function(D){
-'use strict';
-const initial=()=>[
- {id:'w1',name:'Sofia Chen',status:'Local demo contact',unread:2,messages:[{text:'I could really use a change of scenery. 🌿',mine:false,time:'9:12'},{text:'Same. A quiet weekend, good coffee, and a long walk?',mine:true,time:'9:13'},{text:'Exactly. I made a little moodboard — take a look when you get a moment.',mine:false,time:'9:14'},{text:'There is a coastline in the collection that feels perfect.',mine:false,time:'9:14',art:'coast'}]},
- {id:'w2',name:'The Sunday people',status:'Fictional group · 4 members',unread:1,messages:[{text:'Sunday plan: meet for coffee, then take the long way through the park.',mine:false,time:'8:36'},{text:'Count me in. I will bring a camera.',mine:true,time:'8:40'},{text:'Share the route here when you have it!',mine:false,time:'8:42'}]},
- {id:'w3',name:'Maya Torres',status:'Local demo contact',unread:0,messages:[{text:'The blue-hour edit is done. Finally found the right rhythm.',mine:false,time:'Yesterday'},{text:'Love it. The final frame is worth waiting for.',mine:true,time:'Yesterday'}]},
- {id:'w4',name:'Leo Park',status:'Local demo contact',unread:0,messages:[{text:'Have you seen the architecture study? Those repeating arches.',mine:false,time:'Yesterday'},{text:'Yes! I added it to the board for Thursday.',mine:true,time:'Yesterday'}]},
- {id:'w5',name:'Noah Rivers',status:'Local demo contact',unread:0,messages:[{text:'One long walk can fix a surprisingly large number of things.',mine:false,time:'Friday'}]},
-];
-D.register({id:'whatsapp',name:'WhatsApp',rank:5,pattern:'Conversations + shared context',description:'Keep every conversation in reach while you coordinate the details. Bring a route, a reference, or a photograph directly into the chat.',tip:'Pair with Maps, choose a destination, and send the route across. Or try the camera / microphone preview; it never places a call.',boundary:'Messages, delivery marks, groups, and contacts are local simulations. Calls are explicit device camera/microphone tests only; there is no network messaging or encryption service.'},ctx=>{
- const {root,scope}=ctx;const m=()=>ctx.get({conversations:initial(),selected:'w1',drafts:{},search:'',filter:'all',pending:null});const current=()=>m().conversations.find(c=>c.id===m().selected)||m().conversations[0];
- function render(){const s=m(),c=current();const conv=s.conversations.filter(c=>c.name.toLowerCase().includes(s.search.toLowerCase())&&(s.filter!=='unread'||c.unread));root.innerHTML=D.appHeader('whatsapp','Private to this browser',D.ib('new-chat','edit','Create a local conversation'))+D.paneTabs('Chats','Conversation')+`<div class="duo-panes"><div class="pane primary-pane"><div class="whatsapp-header"><h2>Chats</h2><span class="pill offline-pill">Local only</span></div><div class="chat-list-search"><div class="search-box">${D.icon('search')}<input name="chat-search" placeholder="Search your conversations" aria-label="Search conversations" value="${D.escape(s.search)}"></div></div><div class="chip-row">${[['all','All'],['unread','Unread']].map(([id,label])=>`<button class="chip ${s.filter===id?'active':''}" data-action="filter" data-filter="${id}">${label}</button>`).join('')}</div><div class="scroll conversation-list" id="conversation-list">${listMarkup(conv)}</div><div class="sample-footer">Messages are saved here, not sent anywhere</div></div><div class="pane secondary-pane"><div class="conversation-header">${D.avatar(c.name)}<div class="grow"><b>${D.escape(c.name)}</b><p>${D.escape(c.status)}</p></div>${D.ib('call-video','video','Test camera locally')}${D.ib('call-audio','phone','Test microphone locally')}</div><div class="scroll conversation-messages" id="conversation-messages"><span class="conversation-date">Local demonstration conversation</span>${c.messages.map(msg=>`<div class="bubble ${msg.mine?'outgoing':''}">${msg.art?D.image(msg.art,'Shared original study'):''}${msg.image?`<img src="${D.escape(msg.image)}" alt="Local image attachment">`:''}${msg.attachment?`<div class="attachment">${D.icon('file',20)}<b>${D.escape(msg.attachment)}</b></div>`:''}${D.escape(msg.text)}<div class="bubble-meta"><span>${D.escape(msg.time||'Now')}</span>${msg.mine?`${D.icon('check2')}<span>saved</span>`:''}</div></div>`).join('')}</div><form class="composer whatsapp-compose" id="whatsapp-send">${s.pending?`<div class="context-card">${D.icon('file',16)}<div class="grow"><b>${D.escape(s.pending.title||'Shared reference')}</b><p>${D.escape((s.pending.text||'').slice(0,150))}</p></div>${D.ib('clear-pending','close','Remove shared reference')}</div>`:''}<div class="composer-box">${D.ib('attach','plus','Attach a local image or file')}<textarea name="message" rows="1" placeholder="Message ${D.escape(c.name.split(' ')[0])}…" aria-label="Message text">${D.escape(s.drafts[c.id]||'')}</textarea>${D.ib('emoji','smile','Add a smile')}<button class="send-btn" type="submit" aria-label="Save message locally">${D.icon('send')}</button></div><div class="composer-hint">Local demo · no message is transmitted</div></form></div></div>`;ctx.pane(root.dataset.activePane||'primary');const sc=D.$('#conversation-messages',root);sc.scrollTop=sc.scrollHeight;}
- function listMarkup(conv){return conv.length?conv.map(c=>`<button class="list-row ${c.id===m().selected?'active':''}" data-action="open-chat" data-id="${c.id}">${D.avatar(c.name)}<div class="grow"><b>${D.escape(c.name)}</b><p>${D.escape(c.messages.at(-1)?.text||'Start a conversation')}</p></div><div class="stack" style="align-items:flex-end;gap:7px"><small>${D.escape(c.messages.at(-1)?.time||'Now')}</small>${c.unread?`<span class="unread-count">${c.unread}</span>`:''}</div></button>`).join(''):D.empty('comment','All caught up','No conversations match this view.');}
- function send(){const c=current(),s=m(),text=(s.drafts[c.id]||'').trim();if(!text&&!s.pending)return;const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});const content=text+(s.pending?'\n\n'+s.pending.text:'');c.messages.push({mine:true,text:content.trim(),time:now,attachment:s.pending?.title});c.messages=c.messages.slice(-200);s.drafts[c.id]='';s.pending=null;ctx.save();render();}
- ctx.act('open-chat',b=>{m().selected=b.dataset.id;current().unread=0;ctx.save();render();ctx.pane('secondary');});ctx.act('filter',b=>{m().filter=b.dataset.filter;ctx.save();render();});ctx.act('emoji',()=>{const c=current();m().drafts[c.id]=(m().drafts[c.id]||'')+' 🙂';ctx.save();D.$('[name=message]',root).value=m().drafts[c.id];D.$('[name=message]',root).focus();});ctx.act('clear-pending',()=>{m().pending=null;ctx.save();render();});
- ctx.act('new-chat',()=>D.dialog('A new local conversation',`<p>Create a fictional contact for this prototype. No phone number or real account is needed.</p><input class="field" id="contact-name" placeholder="Contact or group name" aria-label="New contact name" maxlength="80"><div class="dialog-footer"><span class="tiny muted">This browser only</span><button class="btn primary" id="create-chat">Create conversation</button></div>`,body=>{D.$('#create-chat',body).onclick=()=>{const name=D.$('#contact-name',body).value.trim();if(!name)return;const c={id:D.uid(),name,status:'Local demo contact',unread:0,messages:[]};m().conversations.unshift(c);m().selected=c.id;ctx.save();D.$('#system-dialog').close();render();ctx.pane('secondary');};}));
- ctx.act('attach',()=>D.dialog('Bring something into the conversation',`<p>A photo or a text file can become a local message. Images are resized before storage.</p><input type="file" class="field" id="chat-file" accept="image/png,image/jpeg,image/webp,image/gif,.txt,.md,.json,.csv" aria-label="Choose a local attachment"><div class="callout">Attachments remain in your browser. No upload or network transmission occurs.</div>`,body=>{D.$('#chat-file',body).onchange=async e=>{try{const f=e.target.files[0];if(!f)return;let image=null,text='';if(f.type.startsWith('image/'))image=await D.readImage(f);else{if(f.size>100000)throw Error('Text attachments must be smaller than 100 KB.');text=(await f.text()).slice(0,15000);}current().messages.push({mine:true,text,image,attachment:f.name,time:'Now'});ctx.save();D.$('#system-dialog').close();render();}catch(e){D.toast(e.message);}};}));
- function call(kind){const c=current();D.dialog(kind==='video'?'Camera preview, not a call':'Microphone test, not a call',`<p>Test your device beside the conversation. Nothing is streamed or recorded. Access starts only after you press the button below.</p><div class="call-preview" id="local-call-preview">${D.avatar(c.name,'large')}<h3>${D.escape(c.name)}</h3><span class="tiny muted">No remote participant</span><video id="camera-preview" class="hidden" autoplay playsinline muted></video><span class="call-label" id="call-status">Permission has not been requested</span></div><div id="mic-meter" style="height:5px;background:#ffffff13;border-radius:6px;margin-top:12px;overflow:hidden"><i style="display:block;height:100%;width:0;background:#8ed5b4"></i></div><div class="call-actions"><button id="enable-device" class="btn primary">${kind==='video'?'Enable camera':'Enable microphone'}</button><button id="end-device" class="btn danger">Close test</button></div>`,body=>{
- let stream=null,ac=null,raf=0,disposed=false;const stop=()=>{disposed=true;stream?.getTracks().forEach(t=>t.stop());cancelAnimationFrame(raf);ac?.close().catch(()=>{});};D.$('#end-device',body).onclick=()=>D.$('#system-dialog').close();D.$('#enable-device',body).onclick=async()=>{const b=D.$('#enable-device',body);b.disabled=true;try{if(!navigator.mediaDevices?.getUserMedia)throw Error('Camera and microphone require a supported browser on HTTPS or localhost.');const candidate=await navigator.mediaDevices.getUserMedia(kind==='video'?{video:{facingMode:'user',width:{ideal:640}},audio:false}:{video:false,audio:true});if(disposed){candidate.getTracks().forEach(t=>t.stop());return;}stream=candidate;if(kind==='video'){const video=D.$('#camera-preview',body);video.srcObject=stream;video.classList.remove('hidden');await video.play();}else{ac=new (window.AudioContext||window.webkitAudioContext)();await ac.resume();const analyser=ac.createAnalyser();analyser.fftSize=256;const source=ac.createMediaStreamSource(stream);source.connect(analyser);const data=new Uint8Array(analyser.fftSize);const tick=()=>{if(disposed)return;analyser.getByteTimeDomainData(data);let sum=0;for(const x of data)sum+=(x-128)**2;const level=Math.min(100,Math.sqrt(sum/data.length)*6);D.$('#mic-meter i',body).style.width=level+'%';raf=requestAnimationFrame(tick);};tick();}D.$('#call-status',body).textContent='Local preview only · not recorded or transmitted';b.textContent=kind==='video'?'Camera enabled':'Microphone enabled';}catch(e){b.disabled=false;D.$('#call-status',body).textContent=e.message||'Permission was not granted.';}};return stop;});}
- ctx.act('call-video',()=>call('video'));ctx.act('call-audio',()=>call('audio'));
- scope.on(root,'input',e=>{if(e.target.name==='message')m().drafts[current().id]=e.target.value;if(e.target.name==='chat-search'){m().search=e.target.value;D.$('#conversation-list',root).innerHTML=listMarkup(m().conversations.filter(c=>c.name.toLowerCase().includes(m().search.toLowerCase())&&(m().filter!=='unread'||c.unread)));}ctx.save();});scope.on(root,'submit',e=>{if(e.target.id==='whatsapp-send'){e.preventDefault();send();}});scope.on(root,'keydown',e=>{if(e.target.name==='message'&&e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}});
- function receive(a){m().pending={title:a.title||'Shared context',text:String(a.text||'').slice(0,15000)};ctx.save();render();ctx.pane('secondary');D.$('[name=message]',root).focus();}scope.cleanup(D.wrapDrop(root,receive));render();return {render,receive};
-});
+(function (D) {
+    'use strict';
+    const initial = () => [
+        { id: 'w1', name: 'Sofia Chen', status: 'Local demo contact', unread: 2, messages: [{ text: 'I could really use a change of scenery. 🌿', mine: false, time: '9:12' }, { text: 'Same. A quiet weekend, good coffee, and a long walk?', mine: true, time: '9:13' }, { text: 'Exactly. I made a little moodboard — take a look when you get a moment.', mine: false, time: '9:14' }, { text: 'There is a coastline in the collection that feels perfect.', mine: false, time: '9:14', art: 'coast' }] },
+        { id: 'w2', name: 'The Sunday people', status: 'Fictional group · 4 members', unread: 1, messages: [{ text: 'Sunday plan: meet for coffee, then take the long way through the park.', mine: false, time: '8:36' }, { text: 'Count me in. I will bring a camera.', mine: true, time: '8:40' }, { text: 'Share the route here when you have it!', mine: false, time: '8:42' }] },
+        { id: 'w3', name: 'Maya Torres', status: 'Local demo contact', unread: 0, messages: [{ text: 'The blue-hour edit is done. Finally found the right rhythm.', mine: false, time: 'Yesterday' }, { text: 'Love it. The final frame is worth waiting for.', mine: true, time: 'Yesterday' }] },
+        { id: 'w4', name: 'Leo Park', status: 'Local demo contact', unread: 0, messages: [{ text: 'Have you seen the architecture study? Those repeating arches.', mine: false, time: 'Yesterday' }, { text: 'Yes! I added it to the board for Thursday.', mine: true, time: 'Yesterday' }] },
+        { id: 'w5', name: 'Noah Rivers', status: 'Local demo contact', unread: 0, messages: [{ text: 'One long walk can fix a surprisingly large number of things.', mine: false, time: 'Friday' }] },
+    ];
+    D.SDK.register({ id: 'whatsapp', name: 'WhatsApp', rank: 5, pattern: 'Conversations + shared context', description: 'Keep every conversation in reach while you coordinate the details. Bring a route, a reference, or a photograph directly into the chat.', tip: 'Pair with Maps, choose a destination, and send the route across. Or try the camera / microphone preview; it never places a call.', boundary: 'Messages, delivery marks, groups, and contacts are local simulations. Calls are explicit device camera/microphone tests only; there is no network messaging or encryption service.' }, D.SDK.UIViewRepresentable(ctx => {
+        const { root, scope } = ctx;
+        const m = () => ctx.get({ conversations: initial(), selected: 'w1', drafts: {}, search: '', filter: 'all', pending: null });
+        const current = () => m().conversations.find(c => c.id === m().selected) || m().conversations[0];
+        function render() { const s = m(), c = current(); const conv = s.conversations.filter(c => c.name.toLowerCase().includes(s.search.toLowerCase()) && (s.filter !== 'unread' || c.unread)); root.innerHTML = D.appHeader('whatsapp', 'Private to this browser', D.ib('new-chat', 'edit', 'Create a local conversation')) + D.paneTabs('Chats', 'Conversation') + `<div class="duo-panes"><div class="pane primary-pane"><div class="whatsapp-header"><h2>Chats</h2><span class="pill offline-pill">Local only</span></div><div class="chat-list-search"><div class="search-box">${D.icon('search')}<input name="chat-search" placeholder="Search your conversations" aria-label="Search conversations" value="${D.escape(s.search)}"></div></div><div class="chip-row">${[['all', 'All'], ['unread', 'Unread']].map(([id, label]) => `<button class="chip ${s.filter === id ? 'active' : ''}" data-action="filter" data-filter="${id}">${label}</button>`).join('')}</div><div class="scroll conversation-list" id="conversation-list">${listMarkup(conv)}</div><div class="sample-footer">Messages are saved here, not sent anywhere</div></div><div class="pane secondary-pane"><div class="conversation-header">${D.avatar(c.name)}<div class="grow"><b>${D.escape(c.name)}</b><p>${D.escape(c.status)}</p></div>${D.ib('call-video', 'video', 'Test camera locally')}${D.ib('call-audio', 'phone', 'Test microphone locally')}</div><div class="scroll conversation-messages" id="conversation-messages"><span class="conversation-date">Local demonstration conversation</span>${c.messages.map(msg => `<div class="bubble ${msg.mine ? 'outgoing' : ''}">${msg.art ? D.image(msg.art, 'Shared original study') : ''}${msg.image ? `<img src="${D.escape(msg.image)}" alt="Local image attachment">` : ''}${msg.attachment ? `<div class="attachment">${D.icon('file', 20)}<b>${D.escape(msg.attachment)}</b></div>` : ''}${D.escape(msg.text)}<div class="bubble-meta"><span>${D.escape(msg.time || 'Now')}</span>${msg.mine ? `${D.icon('check2')}<span>saved</span>` : ''}</div></div>`).join('')}</div><form class="composer whatsapp-compose" id="whatsapp-send">${s.pending ? `<div class="context-card">${D.icon('file', 16)}<div class="grow"><b>${D.escape(s.pending.title || 'Shared reference')}</b><p>${D.escape((s.pending.text || '').slice(0, 150))}</p></div>${D.ib('clear-pending', 'close', 'Remove shared reference')}</div>` : ''}<div class="composer-box">${D.ib('attach', 'plus', 'Attach a local image or file')}<textarea name="message" rows="1" placeholder="Message ${D.escape(c.name.split(' ')[0])}…" aria-label="Message text">${D.escape(s.drafts[c.id] || '')}</textarea>${D.ib('emoji', 'smile', 'Add a smile')}<button class="send-btn" type="submit" aria-label="Save message locally">${D.icon('send')}</button></div><div class="composer-hint">Local demo · no message is transmitted</div></form></div></div>`; ctx.pane(root.dataset.activePane || 'primary'); const sc = D.$('#conversation-messages', root); sc.scrollTop = sc.scrollHeight; }
+        function listMarkup(conv) { return conv.length ? conv.map(c => `<button class="list-row ${c.id === m().selected ? 'active' : ''}" data-action="open-chat" data-id="${c.id}">${D.avatar(c.name)}<div class="grow"><b>${D.escape(c.name)}</b><p>${D.escape(c.messages.at(-1)?.text || 'Start a conversation')}</p></div><div class="stack" style="align-items:flex-end;gap:7px"><small>${D.escape(c.messages.at(-1)?.time || 'Now')}</small>${c.unread ? `<span class="unread-count">${c.unread}</span>` : ''}</div></button>`).join('') : D.empty('comment', 'All caught up', 'No conversations match this view.'); }
+        function send() { const c = current(), s = m(), text = (s.drafts[c.id] || '').trim(); if (!text && !s.pending)
+            return; const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); const content = text + (s.pending ? '\n\n' + s.pending.text : ''); c.messages.push({ mine: true, text: content.trim(), time: now, attachment: s.pending?.title }); c.messages = c.messages.slice(-200); s.drafts[c.id] = ''; s.pending = null; ctx.save(); render(); }
+        ctx.act('open-chat', b => { m().selected = b.dataset.id; current().unread = 0; ctx.save(); render(); ctx.pane('secondary'); });
+        ctx.act('filter', b => { m().filter = b.dataset.filter; ctx.save(); render(); });
+        ctx.act('emoji', () => { const c = current(); m().drafts[c.id] = (m().drafts[c.id] || '') + ' 🙂'; ctx.save(); D.$('[name=message]', root).value = m().drafts[c.id]; D.$('[name=message]', root).focus(); });
+        ctx.act('clear-pending', () => { m().pending = null; ctx.save(); render(); });
+        ctx.act('new-chat', () => D.dialog('A new local conversation', `<p>Create a fictional contact for this prototype. No phone number or real account is needed.</p><input class="field" id="contact-name" placeholder="Contact or group name" aria-label="New contact name" maxlength="80"><div class="dialog-footer"><span class="tiny muted">This browser only</span><button class="btn primary" id="create-chat">Create conversation</button></div>`, body => { D.$('#create-chat', body).onclick = () => { const name = D.$('#contact-name', body).value.trim(); if (!name)
+            return; const c = { id: D.uid(), name, status: 'Local demo contact', unread: 0, messages: [] }; m().conversations.unshift(c); m().selected = c.id; ctx.save(); D.$('#system-dialog').close(); render(); ctx.pane('secondary'); }; }));
+        ctx.act('attach', () => D.dialog('Bring something into the conversation', `<p>A photo or a text file can become a local message. Images are resized before storage.</p><input type="file" class="field" id="chat-file" accept="image/png,image/jpeg,image/webp,image/gif,.txt,.md,.json,.csv" aria-label="Choose a local attachment"><div class="callout">Attachments remain in your browser. No upload or network transmission occurs.</div>`, body => { D.$('#chat-file', body).onchange = async (e) => { try {
+            const f = e.target.files[0];
+            if (!f)
+                return;
+            let image = null, text = '';
+            if (f.type.startsWith('image/'))
+                image = await D.readImage(f);
+            else {
+                if (f.size > 100000)
+                    throw Error('Text attachments must be smaller than 100 KB.');
+                text = (await f.text()).slice(0, 15000);
+            }
+            current().messages.push({ mine: true, text, image, attachment: f.name, time: 'Now' });
+            ctx.save();
+            D.$('#system-dialog').close();
+            render();
+        }
+        catch (e) {
+            D.toast(e.message);
+        } }; }));
+        function call(kind) {
+            const c = current();
+            D.dialog(kind === 'video' ? 'Camera preview, not a call' : 'Microphone test, not a call', `<p>Test your device beside the conversation. Nothing is streamed or recorded. Access starts only after you press the button below.</p><div class="call-preview" id="local-call-preview">${D.avatar(c.name, 'large')}<h3>${D.escape(c.name)}</h3><span class="tiny muted">No remote participant</span><video id="camera-preview" class="hidden" autoplay playsinline muted></video><span class="call-label" id="call-status">Permission has not been requested</span></div><div id="mic-meter" style="height:5px;background:#ffffff13;border-radius:6px;margin-top:12px;overflow:hidden"><i style="display:block;height:100%;width:0;background:#8ed5b4"></i></div><div class="call-actions"><button id="enable-device" class="btn primary">${kind === 'video' ? 'Enable camera' : 'Enable microphone'}</button><button id="end-device" class="btn danger">Close test</button></div>`, body => {
+                let stream = null, ac = null, raf = 0, disposed = false;
+                const stop = () => { disposed = true; stream?.getTracks().forEach(t => t.stop()); cancelAnimationFrame(raf); ac?.close().catch(() => { }); };
+                D.$('#end-device', body).onclick = () => D.$('#system-dialog').close();
+                D.$('#enable-device', body).onclick = async () => { const b = D.$('#enable-device', body); b.disabled = true; try {
+                    if (!navigator.mediaDevices?.getUserMedia)
+                        throw Error('Camera and microphone require a supported browser on HTTPS or localhost.');
+                    const candidate = await navigator.mediaDevices.getUserMedia(kind === 'video' ? { video: { facingMode: 'user', width: { ideal: 640 } }, audio: false } : { video: false, audio: true });
+                    if (disposed) {
+                        candidate.getTracks().forEach(t => t.stop());
+                        return;
+                    }
+                    stream = candidate;
+                    if (kind === 'video') {
+                        const video = D.$('#camera-preview', body);
+                        video.srcObject = stream;
+                        video.classList.remove('hidden');
+                        await video.play();
+                    }
+                    else {
+                        ac = new (window.AudioContext || window.webkitAudioContext)();
+                        await ac.resume();
+                        const analyser = ac.createAnalyser();
+                        analyser.fftSize = 256;
+                        const source = ac.createMediaStreamSource(stream);
+                        source.connect(analyser);
+                        const data = new Uint8Array(analyser.fftSize);
+                        const tick = () => { if (disposed)
+                            return; analyser.getByteTimeDomainData(data); let sum = 0; for (const x of data)
+                            sum += (x - 128) ** 2; const level = Math.min(100, Math.sqrt(sum / data.length) * 6); D.$('#mic-meter i', body).style.width = level + '%'; raf = requestAnimationFrame(tick); };
+                        tick();
+                    }
+                    D.$('#call-status', body).textContent = 'Local preview only · not recorded or transmitted';
+                    b.textContent = kind === 'video' ? 'Camera enabled' : 'Microphone enabled';
+                }
+                catch (e) {
+                    b.disabled = false;
+                    D.$('#call-status', body).textContent = e.message || 'Permission was not granted.';
+                } };
+                return stop;
+            });
+        }
+        ctx.act('call-video', () => call('video'));
+        ctx.act('call-audio', () => call('audio'));
+        scope.on(root, 'input', e => { if (e.target.name === 'message')
+            m().drafts[current().id] = e.target.value; if (e.target.name === 'chat-search') {
+            m().search = e.target.value;
+            D.$('#conversation-list', root).innerHTML = listMarkup(m().conversations.filter(c => c.name.toLowerCase().includes(m().search.toLowerCase()) && (m().filter !== 'unread' || c.unread)));
+        } ctx.save(); });
+        scope.on(root, 'submit', e => { if (e.target.id === 'whatsapp-send') {
+            e.preventDefault();
+            send();
+        } });
+        scope.on(root, 'keydown', e => { if (e.target.name === 'message' && e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            send();
+        } });
+        function receive(a) { m().pending = { title: a.title || 'Shared context', text: String(a.text || '').slice(0, 15000) }; ctx.save(); render(); ctx.pane('secondary'); D.$('[name=message]', root).focus(); }
+        scope.cleanup(D.wrapDrop(root, receive));
+        render();
+        return { render, receive };
+    }));
 })(window.Duo);

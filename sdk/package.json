@@ -1,0 +1,17 @@
+{
+  "name": "@wieslawsoltes/duokit",
+  "version": "3.0.0",
+  "description": "Independent SwiftUI-inspired JavaScript state, binding, view and application SDK",
+  "license": "MIT",
+  "main": "./duokit.js",
+  "module": "./index.mjs",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": { "types": "./index.d.ts", "import": "./index.mjs", "require": "./duokit.js" },
+    "./host": "./host.js",
+    "./styles": "./duokit.css"
+  },
+  "files": ["duokit.js", "index.mjs", "index.d.ts", "host.js", "duokit.css", "README.md", "LICENSE"],
+  "repository": {"type":"git", "url":"https://github.com/wieslawsoltes/DuoStudio.git", "directory":"sdk"},
+  "sideEffects": ["./host.js", "./duokit.js", "./duokit.css"]
+}

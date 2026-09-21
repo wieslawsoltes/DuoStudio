@@ -1,6 +1,6 @@
 (function(D){
 'use strict';
-D.VERSION='2.0.0';
+D.VERSION='3.0.0';
 D.$=(s,r=document)=>r.querySelector(s);D.$$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 D.escape=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 D.uid=()=>globalThis.crypto?.randomUUID?.()||`duo-${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
@@ -23,7 +23,7 @@ D.dialog=(title,html,mount)=>{
  dialog.showModal();const cleanup=mount?.(D.$('.dialog-body',dialog));currentDialogCleanup=typeof cleanup==='function'?cleanup:null;
  dialog.onclose=()=>{if(dialog.open)return;const cleanup=currentDialogCleanup;currentDialogCleanup=null;cleanup?.();};
 };
-D.scope=()=>{const ac=new AbortController();const clean=[];return {signal:ac.signal,on:(el,type,fn,opts={})=>el.addEventListener(type,fn,{...opts,signal:ac.signal}),cleanup:fn=>clean.push(fn),dispose:()=>{ac.abort();clean.splice(0).forEach(f=>{try{f();}catch(e){console.warn(e);}});}};};
+D.scope=()=>new globalThis.DuoKit.Scope();
 const defaults={version:1,prefs:{posture:'open',angle:180,rotation:false,dark:false,palette:0,brightness:1,volume:.45,wifi:true,focus:false,reducedMotion:false},pairs:[],shelf:[],recent:[],apps:{}};
 const clone=x=>structuredClone(x);
 function safeObject(x,depth=0,key=''){
@@ -69,7 +69,7 @@ function validateAppModels(models){
  };
  const comment=x=>checkFields(x,{name:'string',text:'string'},'comment');
  for(const [id,v] of Object.entries(models)){
-  if(!shape[id])throw Error('Unknown app in session: '+id);checkFields(v,shape[id],id);
+  if(!shape[id]){if(/^user-[a-z0-9-]{1,60}$/.test(id)&&v&&typeof v==='object'&&!Array.isArray(v)){globalThis.DuoKit.safeData(v);continue;}throw Error('Unknown app in session: '+id);}checkFields(v,shape[id],id);
   const require=(ok,message)=>{if(!ok)throw Error(id+': '+message);},number=(n,min,max)=>Number.isFinite(n)&&n>=min&&n<=max,color=c=>/^#[a-f0-9]{6}$/i.test(c),enumOf=(x,options)=>options.includes(x),vector=(v,min=-100000,max=100000)=>Array.isArray(v)&&v.length===3&&v.every(n=>number(n,min,max)),unique=items=>new Set(items.map(x=>x.id)).size===items.length;
   if(id==='draftline'){
    require(v.entities.length<=2000&&unique(v.entities),'Invalid CAD entity count or IDs');checkFields(v.view,{x:'number',y:'number',scale:'number'},'CAD view');require(number(v.view.scale,.1,20),'Invalid zoom');require(enumOf(v.tool,['select','line','rect','circle','text','dimension','pan']),'Unknown drawing tool');
@@ -119,21 +119,7 @@ D.apps=new Map();
 D.register=(meta,mount)=>D.apps.set(meta.id,{pattern:'Workspace + inspector',boundary:'Local application; see documented format and service boundaries.',...meta,mount});
 D.appHeader=(id,subtitle,actions='')=>`<header class="app-header"><div class="app-title">${D.brand(id,27)}<div><b>${D.escape(D.apps.get(id)?.name||id)}</b><small>${D.escape(subtitle)}</small></div></div><div class="app-head-actions">${actions}${D.ib('share-app','share','Share current context')}${D.ib('app-menu','more','App actions')}</div></header>`;
 D.paneTabs=(a,b)=>`<div class="pane-tabs"><button class="active" data-pane="primary">${D.escape(a)}</button><button data-pane="secondary">${D.escape(b)}</button></div>`;
-D.mount=(host,id,instanceId)=>{
- const def=D.apps.get(id);if(!def)throw Error('Unknown app: '+id);
- const root=document.createElement('section');root.className='app-root';root.dataset.app=id;root.dataset.activePane='primary';root.setAttribute('aria-label',def.name+' prototype');host.append(root);
- const scope=D.scope();const actions={},listened=new Set();
- const ctx={root,id,instanceId,scope,actions,get:(seed)=>D.store.get(id,seed),save:()=>D.store.save(),act:(name,fn)=>actions[name]=fn,toast:D.toast,
-  share:(text,title=def.name)=>D.share({type:'text',title,text,source:id}),
-  listen:(type,fn)=>{listened.add(type);scope.on(D.bus,type,e=>fn(e.detail));},
-  pane:p=>{root.dataset.activePane=p;D.$$('[data-pane]',root).forEach(b=>b.classList.toggle('active',b.dataset.pane===p));},
- };
- scope.on(root,'click',e=>{const pane=e.target.closest('[data-pane]');if(pane){ctx.pane(pane.dataset.pane);return;}const b=e.target.closest('[data-action]');if(!b||b.disabled)return;const f=actions[b.dataset.action];if(f){Promise.resolve().then(()=>f(b,e)).catch(err=>{console.error(err);D.toast(err.message||'This action could not finish.');});}else if(b.dataset.action==='share-app'){ctx.share(def.description);}else if(b.dataset.action==='app-menu'){D.dialog(def.name+' · prototype',`<p>${D.escape(def.description)}</p><div class="callout">${D.escape(def.boundary)}</div><p class="muted">Use the pane tabs in compact layouts. All data stays in this browser. External services are not connected.</p>`);}});
- let api;try{api=def.mount(ctx)||{};}catch(error){scope.dispose();root.remove();throw error;}
- if(!root.querySelector('.pane-tabs')&&root.querySelector('.duo-panes')){const holder=document.createElement('div');holder.innerHTML=D.paneTabs('Workspace','Inspector');root.querySelector('.duo-panes').before(holder.firstElementChild);}
- if(!listened.has('restore'))scope.on(D.bus,'restore',e=>{if(e.detail===id)api.render?.();});
- return {root,id,api,actions,ctx,dispose:()=>{scope.dispose();api.dispose?.();root.remove();},receive:artifact=>api.receive?.(artifact)};
-};
+// App mounting and lifetime are owned by sdk/host.js.
 D.share=artifact=>{
  D.dialog('Send to the other side',`<div class="share-preview">${D.icon('file',28)}<div><b>${D.escape(artifact.title||'Shared context')}</b><p>${D.escape(String(artifact.text||'').slice(0,150))}</p></div></div><div class="share-apps">${['chatgpt','whatsapp','gmail','gemini'].map(id=>`<button data-target="${id}">${D.brand(id,48)}<span>${D.apps.get(id)?.name}</span></button>`).join('')}<button data-target="shelf">${D.icon('copy',48)}<span>Clipboard shelf</span></button></div>`,body=>{body.addEventListener('click',e=>{const b=e.target.closest('[data-target]');if(!b)return;D.$('#system-dialog').close();if(b.dataset.target==='shelf'){D.addToShelf(artifact);}else D.emit('transfer',{app:b.dataset.target,artifact});});});
 };

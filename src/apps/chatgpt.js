@@ -1,24 +1,67 @@
-(function(D){
-'use strict';
-D.register({id:'chatgpt',name:'ChatGPT',rank:1,pattern:'Conversation + canvas',description:'Think on one side. Write, edit, and preview on the other. Your reference stays beside your work.',tip:'Ask for an HTML component, edit its source, then switch to Preview. Or share a page from Google into this conversation.',boundary:'The assistant uses clearly labeled local templates and intent matching. No OpenAI model or service is connected.'},ctx=>{
- const {root,scope}=ctx;const seed={messages:[],prompt:'',context:'',artifact:D.engine.generate('Plan a slow weekend by the coast'),preview:false};
- const m=()=>ctx.get(seed);let lastEdit=0;
- function render(){const s=m();root.innerHTML=D.appHeader('chatgpt','Offline demo engine',D.btn('new-chat','edit','New chat','small ghost'))+D.paneTabs('Conversation','Canvas')+`<div class="duo-panes"><div class="pane primary-pane chat-column"><div class="scroll" id="chat-scroll">${!s.messages.length?`<div class="chat-intro"><span class="intro-mark">${D.brand('chatgpt',37)}</span><h2>A thought on one side.<br><span>Possibility on the other.</span></h2><p>Make room for your ideas. Start a conversation, and shape the work alongside it.</p></div><div class="prompt-grid">${[['pin','Plan a slow weekend'],['code','Build an HTML component'],['mail','Draft an invitation email'],['spark','Shape a creative brief']].map(([i,t])=>`<button class="prompt-card" data-action="suggest" data-prompt="${t}">${D.icon(i)}<span>${t}</span></button>`).join('')}</div>`:''}<div class="chat-messages">${s.messages.map((msg,i)=>`<div class="chat-message ${msg.role}">${msg.role==='assistant'?D.brand('chatgpt',24):''}<div class="message-text">${D.escape(msg.text)}${msg.role==='assistant'?`<div class="message-actions"><button data-action="copy-message" data-index="${i}">Copy</button><button data-action="canvas-pane">Open canvas ${D.icon('chevron',10)}</button></div>`:''}</div></div>`).join('')}</div></div><form class="composer" id="chat-form">${s.context?`<div class="context-card">${D.icon('file',16)}<div class="grow"><b>Context from the other side</b><p>${D.escape(s.context.slice(0,200))}</p></div>${D.ib('clear-context','close','Remove context')}</div>`:''}<div class="composer-box">${D.ib('chat-attach','attach','Attach a text file')}<textarea rows="2" aria-label="Message ChatGPT prototype" name="prompt" placeholder="Bring an idea to life…">${D.escape(s.prompt)}</textarea><button class="send-btn" type="submit" aria-label="Send prompt">${D.icon('arrow')}</button></div><div class="composer-hint">Local, deterministic templates · not a live AI model</div></form></div><div class="pane secondary-pane"><div class="pane-toolbar"><div><h3>Canvas</h3><small>Your working surface</small></div><div class="row" style="gap:4px">${s.artifact.type==='code'?D.btn('preview','code',s.preview?'Source':'Preview','small ghost'):''}${D.ib('undo-artifact','undo','Undo last canvas change')}${D.ib('share-artifact','share','Share canvas')}${D.ib('export-artifact','download','Export canvas')}</div></div><div class="artifact-shell"><div class="artifact-paper">${s.artifact.type==='code'?'':`<div class="artifact-cover">${D.image(s.artifact.type==='trip'?'coast':'dunes','Original landscape study')}<span>ROOM FOR WHAT MATTERS</span></div><h2 class="artifact-title">${D.escape(s.artifact.title)}</h2>`}${s.preview&&s.artifact.type==='code'?'<iframe class="code-preview" title="Sandboxed HTML and CSS preview" sandbox></iframe>':`<textarea class="artifact-editor ${s.artifact.type==='code'?'code':''}" aria-label="Editable canvas" name="artifact" spellcheck="${s.artifact.type!=='code'}">${D.escape(s.artifact.body)}</textarea>`}</div><div class="artifact-status"><span>${D.icon('check',10)} Saved locally</span><span id="artifact-length">${s.artifact.body.length.toLocaleString()} characters</span></div></div></div></div>`;
- if(s.preview&&s.artifact.type==='code'){D.$('iframe',root).srcdoc=`<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src data:;">${s.artifact.body}`;}
- const c=D.$('#chat-scroll',root);if(s.messages.length)c.scrollTop=c.scrollHeight;
- ctx.pane(root.dataset.activePane||'primary');
- }
- function send(text){text=(text??m().prompt).trim();if(!text)return;D.store.checkpoint('chatgpt');const s=m();const output=D.engine.generate(text,s.context);s.messages.push({role:'user',text},{role:'assistant',text:output.reply});s.messages=s.messages.slice(-60);s.artifact=output;s.prompt='';s.preview=false;ctx.save();render();}
- ctx.act('suggest',b=>send(b.dataset.prompt));ctx.act('new-chat',()=>{D.store.checkpoint('chatgpt');m().messages=[];m().prompt='';m().context='';ctx.save();render();});
- ctx.act('copy-message',b=>D.copy(m().messages[+b.dataset.index].text));ctx.act('canvas-pane',()=>ctx.pane('secondary'));
- ctx.act('clear-context',()=>{m().context='';ctx.save();render();});ctx.act('preview',()=>{m().preview=!m().preview;ctx.save();render();});
- ctx.act('export-artifact',()=>{const a=m().artifact;D.download(a.type==='code'?'duo-component.html':'duo-canvas.md',a.body,a.type==='code'?'text/html':'text/markdown');});ctx.act('share-artifact',()=>ctx.share(m().artifact.body,m().artifact.title));
- ctx.act('undo-artifact',()=>{if(!D.store.undo())D.toast('Nothing to undo yet');});
- ctx.act('chat-attach',()=>{D.dialog('Attach a local reference',`<p>Text and Markdown files are read locally and added as context. Nothing is uploaded.</p><input class="field" type="file" accept=".txt,.md,.csv,.json,.html" aria-label="Choose a text reference">`,body=>{D.$('input',body).onchange=async e=>{try{const f=e.target.files[0];if(!f)return;if(f.size>100000)throw Error('Use a reference smaller than 100 KB.');m().context=(await f.text()).slice(0,15000);ctx.save();D.$('#system-dialog').close();render();}catch(e){D.toast(e.message);}};});});
- scope.on(root,'submit',e=>{if(e.target.id==='chat-form'){e.preventDefault();send();}});
- scope.on(root,'input',e=>{if(e.target.name==='prompt')m().prompt=e.target.value;if(e.target.name==='artifact'){if(Date.now()-lastEdit>1500){D.store.checkpoint('chatgpt');lastEdit=Date.now();}m().artifact.body=e.target.value;D.$('#artifact-length',root).textContent=e.target.value.length.toLocaleString()+' characters';}ctx.save();});
- scope.on(root,'keydown',e=>{if(e.target.name==='prompt'&&e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}});
- function receive(a){m().context=String(a.text||'').slice(0,15000);m().prompt='Summarize and organize this reference';ctx.save();render();ctx.pane('primary');D.$('[name=prompt]',root)?.focus();}
- scope.cleanup(D.wrapDrop(root,receive));render();return {render,receive};
-});
+(function (D) {
+    'use strict';
+    D.SDK.register({ id: 'chatgpt', name: 'ChatGPT', rank: 1, pattern: 'Conversation + canvas', description: 'Think on one side. Write, edit, and preview on the other. Your reference stays beside your work.', tip: 'Ask for an HTML component, edit its source, then switch to Preview. Or share a page from Google into this conversation.', boundary: 'The assistant uses clearly labeled local templates and intent matching. No OpenAI model or service is connected.' }, D.SDK.UIViewRepresentable(ctx => {
+        const { root, scope } = ctx;
+        const seed = { messages: [], prompt: '', context: '', artifact: D.engine.generate('Plan a slow weekend by the coast'), preview: false };
+        const m = () => ctx.get(seed);
+        let lastEdit = 0;
+        function render() {
+            const s = m();
+            root.innerHTML = D.appHeader('chatgpt', 'Offline demo engine', D.btn('new-chat', 'edit', 'New chat', 'small ghost')) + D.paneTabs('Conversation', 'Canvas') + `<div class="duo-panes"><div class="pane primary-pane chat-column"><div class="scroll" id="chat-scroll">${!s.messages.length ? `<div class="chat-intro"><span class="intro-mark">${D.brand('chatgpt', 37)}</span><h2>A thought on one side.<br><span>Possibility on the other.</span></h2><p>Make room for your ideas. Start a conversation, and shape the work alongside it.</p></div><div class="prompt-grid">${[['pin', 'Plan a slow weekend'], ['code', 'Build an HTML component'], ['mail', 'Draft an invitation email'], ['spark', 'Shape a creative brief']].map(([i, t]) => `<button class="prompt-card" data-action="suggest" data-prompt="${t}">${D.icon(i)}<span>${t}</span></button>`).join('')}</div>` : ''}<div class="chat-messages">${s.messages.map((msg, i) => `<div class="chat-message ${msg.role}">${msg.role === 'assistant' ? D.brand('chatgpt', 24) : ''}<div class="message-text">${D.escape(msg.text)}${msg.role === 'assistant' ? `<div class="message-actions"><button data-action="copy-message" data-index="${i}">Copy</button><button data-action="canvas-pane">Open canvas ${D.icon('chevron', 10)}</button></div>` : ''}</div></div>`).join('')}</div></div><form class="composer" id="chat-form">${s.context ? `<div class="context-card">${D.icon('file', 16)}<div class="grow"><b>Context from the other side</b><p>${D.escape(s.context.slice(0, 200))}</p></div>${D.ib('clear-context', 'close', 'Remove context')}</div>` : ''}<div class="composer-box">${D.ib('chat-attach', 'attach', 'Attach a text file')}<textarea rows="2" aria-label="Message ChatGPT prototype" name="prompt" placeholder="Bring an idea to life…">${D.escape(s.prompt)}</textarea><button class="send-btn" type="submit" aria-label="Send prompt">${D.icon('arrow')}</button></div><div class="composer-hint">Local, deterministic templates · not a live AI model</div></form></div><div class="pane secondary-pane"><div class="pane-toolbar"><div><h3>Canvas</h3><small>Your working surface</small></div><div class="row" style="gap:4px">${s.artifact.type === 'code' ? D.btn('preview', 'code', s.preview ? 'Source' : 'Preview', 'small ghost') : ''}${D.ib('undo-artifact', 'undo', 'Undo last canvas change')}${D.ib('share-artifact', 'share', 'Share canvas')}${D.ib('export-artifact', 'download', 'Export canvas')}</div></div><div class="artifact-shell"><div class="artifact-paper">${s.artifact.type === 'code' ? '' : `<div class="artifact-cover">${D.image(s.artifact.type === 'trip' ? 'coast' : 'dunes', 'Original landscape study')}<span>ROOM FOR WHAT MATTERS</span></div><h2 class="artifact-title">${D.escape(s.artifact.title)}</h2>`}${s.preview && s.artifact.type === 'code' ? '<iframe class="code-preview" title="Sandboxed HTML and CSS preview" sandbox></iframe>' : `<textarea class="artifact-editor ${s.artifact.type === 'code' ? 'code' : ''}" aria-label="Editable canvas" name="artifact" spellcheck="${s.artifact.type !== 'code'}">${D.escape(s.artifact.body)}</textarea>`}</div><div class="artifact-status"><span>${D.icon('check', 10)} Saved locally</span><span id="artifact-length">${s.artifact.body.length.toLocaleString()} characters</span></div></div></div></div>`;
+            if (s.preview && s.artifact.type === 'code') {
+                D.$('iframe', root).srcdoc = `<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src data:;">${s.artifact.body}`;
+            }
+            const c = D.$('#chat-scroll', root);
+            if (s.messages.length)
+                c.scrollTop = c.scrollHeight;
+            ctx.pane(root.dataset.activePane || 'primary');
+        }
+        function send(text) { text = (text ?? m().prompt).trim(); if (!text)
+            return; D.store.checkpoint('chatgpt'); const s = m(); const output = D.engine.generate(text, s.context); s.messages.push({ role: 'user', text }, { role: 'assistant', text: output.reply }); s.messages = s.messages.slice(-60); s.artifact = output; s.prompt = ''; s.preview = false; ctx.save(); render(); }
+        ctx.act('suggest', b => send(b.dataset.prompt));
+        ctx.act('new-chat', () => { D.store.checkpoint('chatgpt'); m().messages = []; m().prompt = ''; m().context = ''; ctx.save(); render(); });
+        ctx.act('copy-message', b => D.copy(m().messages[+b.dataset.index].text));
+        ctx.act('canvas-pane', () => ctx.pane('secondary'));
+        ctx.act('clear-context', () => { m().context = ''; ctx.save(); render(); });
+        ctx.act('preview', () => { m().preview = !m().preview; ctx.save(); render(); });
+        ctx.act('export-artifact', () => { const a = m().artifact; D.download(a.type === 'code' ? 'duo-component.html' : 'duo-canvas.md', a.body, a.type === 'code' ? 'text/html' : 'text/markdown'); });
+        ctx.act('share-artifact', () => ctx.share(m().artifact.body, m().artifact.title));
+        ctx.act('undo-artifact', () => { if (!D.store.undo())
+            D.toast('Nothing to undo yet'); });
+        ctx.act('chat-attach', () => { D.dialog('Attach a local reference', `<p>Text and Markdown files are read locally and added as context. Nothing is uploaded.</p><input class="field" type="file" accept=".txt,.md,.csv,.json,.html" aria-label="Choose a text reference">`, body => { D.$('input', body).onchange = async (e) => { try {
+            const f = e.target.files[0];
+            if (!f)
+                return;
+            if (f.size > 100000)
+                throw Error('Use a reference smaller than 100 KB.');
+            m().context = (await f.text()).slice(0, 15000);
+            ctx.save();
+            D.$('#system-dialog').close();
+            render();
+        }
+        catch (e) {
+            D.toast(e.message);
+        } }; }); });
+        scope.on(root, 'submit', e => { if (e.target.id === 'chat-form') {
+            e.preventDefault();
+            send();
+        } });
+        scope.on(root, 'input', e => { if (e.target.name === 'prompt')
+            m().prompt = e.target.value; if (e.target.name === 'artifact') {
+            if (Date.now() - lastEdit > 1500) {
+                D.store.checkpoint('chatgpt');
+                lastEdit = Date.now();
+            }
+            m().artifact.body = e.target.value;
+            D.$('#artifact-length', root).textContent = e.target.value.length.toLocaleString() + ' characters';
+        } ctx.save(); });
+        scope.on(root, 'keydown', e => { if (e.target.name === 'prompt' && e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            send();
+        } });
+        function receive(a) { m().context = String(a.text || '').slice(0, 15000); m().prompt = 'Summarize and organize this reference'; ctx.save(); render(); ctx.pane('primary'); D.$('[name=prompt]', root)?.focus(); }
+        scope.cleanup(D.wrapDrop(root, receive));
+        render();
+        return { render, receive };
+    }));
 })(window.Duo);
