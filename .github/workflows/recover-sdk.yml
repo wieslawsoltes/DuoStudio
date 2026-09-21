@@ -1,0 +1,36 @@
+name: Recover SDK transfer
+on:
+  push:
+    branches: [feat/duokit-ide]
+    paths: [.github/workflows/recover-sdk.yml]
+permissions:
+  contents: read
+jobs:
+  recover:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Archive exact branch and tool dependencies
+        run: |
+          mkdir -p recovery
+          git archive --format=zip HEAD -o recovery/branch.zip
+          npm install --ignore-scripts --no-audit --no-fund --prefix recovery/tools acorn@8.15.0 typescript@5.8.3
+          python3 - <<'PY'
+          import base64,lzma
+          from pathlib import Path
+          packed=base64.b64decode(''.join(p.read_text().strip() for p in sorted(Path('.changes').glob('*.b64'))))
+          decoder=lzma.LZMADecompressor()
+          text=decoder.decompress(packed)
+          Path('recovery/payload.partial.json').write_bytes(text)
+          print('Recovered',len(text),'JSON prefix bytes; archive complete:',decoder.eof)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sdk-recovery
+          path: recovery
+          retention-days: 7
