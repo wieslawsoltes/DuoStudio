@@ -1,5 +1,5 @@
 {
-  "passed": 43,
+  "passed": 46,
   "failed": 0,
   "results": [
     {
@@ -120,6 +120,18 @@
     },
     {
       "name": "JavaScript parses: src/icons.js",
+      "passed": true
+    },
+    {
+      "name": "JavaScript parses: src/ide/ide.js",
+      "passed": true
+    },
+    {
+      "name": "JavaScript parses: src/ide/project.js",
+      "passed": true
+    },
+    {
+      "name": "JavaScript parses: src/ide/runtime.js",
       "passed": true
     },
     {

@@ -1,3 +1,7 @@
+# Duo Studio 3 — Developer Studio + DuoKit SDK
+
+Choose **Developer Studio** from the simulator toolbar to edit any of the twenty apps, run modified code, visually edit live UI and create new apps. See [SDK and IDE guide](docs/SDK_IDE.md) for usage, architecture and compatibility boundaries.
+
 # Duo Studio · Creative OS 2.0
 
 An independent, twenty-app creative studio inside a folding-device simulator. HTML, JavaScript, WebGPU, Canvas 2D, Web Audio, IndexedDB, and original inline media. No runtime packages, sign-in, telemetry, or external service dependency.

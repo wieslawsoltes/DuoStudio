@@ -5,187 +5,187 @@
     {
       "test": "Twenty app modules registered",
       "passed": true,
-      "ms": 2
+      "ms": 3
     },
     {
       "test": "Home contains twenty apps and two system tiles",
       "passed": true,
-      "ms": 34
+      "ms": 25
     },
     {
       "test": "Standalone contains no external scripts or styles",
       "passed": true,
-      "ms": 2
+      "ms": 1
     },
     {
       "test": "chatgpt: launch with two visible app panes",
       "passed": true,
-      "ms": 165
+      "ms": 160
     },
     {
       "test": "threads: launch with two visible app panes",
       "passed": true,
-      "ms": 168
+      "ms": 160
     },
     {
       "test": "google: launch with two visible app panes",
       "passed": true,
-      "ms": 159
+      "ms": 157
     },
     {
       "test": "tiktok: launch with two visible app panes",
       "passed": true,
-      "ms": 161
+      "ms": 158
     },
     {
       "test": "whatsapp: launch with two visible app panes",
       "passed": true,
-      "ms": 160
+      "ms": 158
     },
     {
       "test": "instagram: launch with two visible app panes",
       "passed": true,
-      "ms": 167
+      "ms": 162
     },
     {
       "test": "youtube: launch with two visible app panes",
       "passed": true,
-      "ms": 164
+      "ms": 159
     },
     {
       "test": "maps: launch with two visible app panes",
       "passed": true,
-      "ms": 166
+      "ms": 161
     },
     {
       "test": "gmail: launch with two visible app panes",
       "passed": true,
-      "ms": 160
+      "ms": 157
     },
     {
       "test": "gemini: launch with two visible app panes",
       "passed": true,
-      "ms": 161
+      "ms": 158
     },
     {
       "test": "ChatGPT: prompt creates an editable HTML artifact",
       "passed": true,
-      "ms": 249
+      "ms": 204
     },
     {
       "test": "ChatGPT: sandboxed, network-isolated HTML preview",
       "passed": true,
-      "ms": 132
+      "ms": 108
     },
     {
       "test": "Fold, unfold, book and tabletop retain editor DOM and selection",
       "passed": true,
-      "ms": 609
+      "ms": 591
     },
     {
       "test": "Threads: publish, reply and like update the local model",
       "passed": true,
-      "ms": 618
+      "ms": 649
     },
     {
       "test": "Google: ranked search, saved sources and comparison",
       "passed": true,
-      "ms": 250
+      "ms": 254
     },
     {
       "test": "Instagram: import real image, publish, save and comment",
       "passed": true,
-      "ms": 548
+      "ms": 530
     },
     {
       "test": "Gemini: build a board, edit a card, reorder cards",
       "passed": true,
-      "ms": 527
+      "ms": 434
     },
     {
       "test": "Gmail: compose, save to Sent, archive and undo",
       "passed": true,
-      "ms": 375
+      "ms": 300
     },
     {
       "test": "WhatsApp: message composer saves local messages",
       "passed": true,
-      "ms": 197
+      "ms": 171
     },
     {
       "test": "Dijkstra: connected, disconnected and zero-distance cases",
       "passed": true,
-      "ms": 4
+      "ms": 5
     },
     {
       "test": "Maps: add route stop, zoom and animate calculated route",
       "passed": true,
-      "ms": 1053
+      "ms": 945
     },
     {
       "test": "Cross-app: Maps shares actual route into WhatsApp Split View",
       "passed": true,
-      "ms": 415
+      "ms": 221
     },
     {
       "test": "Split View: keyboard resize, swap sides and save app pair",
       "passed": true,
-      "ms": 259
+      "ms": 95
     },
     {
       "test": "TikTok: real bundled playback, like, comment and next film",
       "passed": true,
-      "ms": 859
+      "ms": 814
     },
     {
       "test": "YouTube: playback, seeking, notes, captions and fold continuity",
       "passed": true,
-      "ms": 1251
+      "ms": 1165
     },
     {
       "test": "Home suspends hidden media",
       "passed": true,
-      "ms": 27
+      "ms": 22
     },
     {
       "test": "Appearance and reduced-motion controls affect rendered UI",
       "passed": true,
-      "ms": 103
+      "ms": 92
     },
     {
       "test": "Session: complete JSON round-trip and remount all ten apps",
       "passed": true,
-      "ms": 1701
+      "ms": 1679
     },
     {
       "test": "Session: malformed schemas, URLs, queues and prototype pollution rejected",
       "passed": true,
-      "ms": 22
+      "ms": 13
     },
     {
       "test": "393-pixel touch layout: pane switching and no horizontal page overflow",
       "passed": true,
-      "ms": 521
+      "ms": 507
     },
     {
       "test": "Dialog replacement disposes resources exactly once",
       "passed": true,
-      "ms": 78
+      "ms": 122
     },
     {
       "test": "All ten apps retain their instance through all four postures (40 states)",
       "passed": true,
-      "ms": 5492
+      "ms": 5067
     },
     {
       "test": "Direct touch keeps both panes reachable from every simulated posture",
       "passed": true,
-      "ms": 262
+      "ms": 200
     },
     {
       "test": "No duplicate SVG gradient IDs",
       "passed": true,
-      "ms": 5
+      "ms": 1
     },
     {
       "test": "No unexpected JavaScript exceptions",

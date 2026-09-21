@@ -1,0 +1,54 @@
+{
+  "passed": 7,
+  "failed": 0,
+  "results": [
+    {
+      "test": "Hosted HTML initializes in secure context",
+      "passed": true
+    },
+    {
+      "test": "Session, device fixtures and IndexedDB bytes survive reload",
+      "passed": true
+    },
+    {
+      "test": "WebGPU compiles and executes modeling and wallpaper pipelines",
+      "passed": true
+    },
+    {
+      "test": "Explicit GPU device loss falls back without losing scene",
+      "passed": true
+    },
+    {
+      "test": "Installed PWA boots all twenty apps completely offline",
+      "passed": true
+    },
+    {
+      "test": "Offline IDE reload rebuilds custom app and retains project bytes",
+      "passed": true
+    },
+    {
+      "test": "No unexpected page exceptions",
+      "passed": true
+    }
+  ],
+  "adapter": {
+    "vendor": "google",
+    "architecture": "swiftshader",
+    "device": "",
+    "description": ""
+  },
+  "gpu": {
+    "wallpaper": "WebGPU",
+    "wallpaperReason": null,
+    "scene": "WebGPU",
+    "reason": null,
+    "polyform": "WebGPU",
+    "polyformReason": null
+  },
+  "pageErrors": [],
+  "environment": {
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+    "secureContext": true,
+    "storage": true
+  }
+}

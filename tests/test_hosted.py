@@ -56,6 +56,22 @@ try:
    page.wait_for_function('!!navigator.serviceWorker.controller');context.set_offline(True)
    page.reload();page.wait_for_function('window.Duo?.simulator');result=ev('Duo.apps.size===20&&Duo.store.data.apps.folio.title==="Hosted persistence sentinel"');context.set_offline(False);return result
   check('Installed PWA boots all twenty apps completely offline',pwa)
+  def ide_offline():
+   ev('Duo.ide.enter()');page.wait_for_function('Duo.ide.frame&&!Duo.ide.pending',timeout=30000)
+   app=ev('Duo.ide.project.addApp("Offline Acceptance")')
+   ev('Duo.ide.run()');page.wait_for_function('Duo.ide.frame&&!Duo.ide.pending&&Duo.ide.project.revision===Duo.ide.builtRevision',timeout=30000)
+   live=page.frame(name='duokit-'+ev('Duo.ide.token'))
+   live.evaluate('Duo.Studio.files.put({id:"offline-ide-bytes",name:"fixture.bin",type:"application/octet-stream",data:new Uint8Array([3,42,255])})')
+   page.wait_for_function('Duo.ide.project.resources.some(r=>r.id==="offline-ide-bytes")')
+   ev('Duo.ide.project.save()');context.set_offline(True)
+   try:
+    page.reload();page.wait_for_function('window.Duo?.ide');ev('Duo.ide.enter()')
+    page.wait_for_function('Duo.ide.frame&&!Duo.ide.pending',timeout=30000)
+    live=page.frame(name='duokit-'+ev('Duo.ide.token'))
+    live.evaluate('id=>Duo.shell.getInstance(id).actions.increment()',app)
+    return live.evaluate('async id=>Duo.store.data.apps[id].count===1&&(await Duo.Studio.files.get("offline-ide-bytes")).data[2]===255',app)
+   finally:context.set_offline(False)
+  check('Offline IDE reload rebuilds custom app and retains project bytes',ide_offline)
   check('No unexpected page exceptions',lambda:not errors);report['pageErrors']=errors
   report['environment']=ev('({userAgent:navigator.userAgent,secureContext:isSecureContext,storage:Duo.store.persistent})');b.close()
 finally:

@@ -24,10 +24,16 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Build standalone app, PWA and source checks
+      - name: Build standalone IDE, simulator and PWA
         run: |
           python3 scripts/build.py
           node scripts/check.mjs
+      - name: Validate independent SDK contracts and type declarations
+        run: |
+          node tests/test_sdk.mjs
+          npm exec --yes --package=typescript@5.8.3 -- tsc --noEmit --strict --lib ES2022,DOM sdk/index.d.ts
+          mkdir -p releases
+          cd sdk && npm pack --ignore-scripts --pack-destination ../releases
       - name: Install browser test tools
         run: |
           python3 -m pip install -r requirements-dev.txt
@@ -43,10 +49,14 @@ jobs:
         run: python3 tests/test_browser.py --chromium "$CHROMIUM"
       - name: Creative apps, engines and simulator regressions
         run: python3 tests/test_creative.py --chromium "$CHROMIUM"
-      - name: Hosted storage, WebGPU and offline installation
+      - name: IDE editing, visual round trips, debugging and exports
+        run: python3 tests/test_ide.py --chromium "$CHROMIUM"
+      - name: Hosted persistence, WebGPU and offline edited-app builds
         run: python3 tests/test_hosted.py --chromium "$CHROMIUM"
-      - name: Capture real simulator gallery
-        run: python3 scripts/capture_v2.py --chromium "$CHROMIUM"
+      - name: Capture actual simulator and IDE gallery
+        run: |
+          python3 scripts/capture_v2.py --chromium "$CHROMIUM"
+          python3 scripts/capture_v3.py --chromium "$CHROMIUM"
       - name: Package complete downloadable source
         run: python3 scripts/package_repository.py
       - name: Stage site
@@ -68,6 +78,14 @@ jobs:
             tests/export-fixture.*
             screenshots/failure-*.png
           if-no-files-found: ignore
+      - name: Upload source and SDK distribution
+        uses: actions/upload-artifact@v4
+        with:
+          name: developer-studio-distribution
+          path: |
+            releases/*
+            dist/duo-studio.html
+            screenshots/v3-*.png
       - name: Upload Pages artifact
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v4
@@ -86,7 +104,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/configure-pages@v5
-      - name: Deploy simulator
+      - name: Deploy simulator and IDE
         id: deployment
         uses: actions/deploy-pages@v4
       - name: Record deployment URL

@@ -1,6 +1,6 @@
 /* Offline installation is opt-in from Device lab. Scope is this project only. */
 'use strict';
-const CACHE='duo-studio-2dbcc44c3b484fde';
+const CACHE='duo-studio-757c5d8e91fe6723';
 const FILES=['./','./index.html','./duo-studio.html','./manifest.webmanifest','./icon-192.png','./icon-512.png'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES))));
 self.addEventListener('activate',e=>e.waitUntil((async()=>{for(const key of await caches.keys())if(key.startsWith('duo-studio-')&&key!==CACHE)await caches.delete(key);await self.clients.claim();})()));

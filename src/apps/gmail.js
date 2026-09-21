@@ -1,27 +1,95 @@
-(function(D){'use strict';
-D.register({id:'gmail',name:'Gmail',rank:9,category:'Productivity',pattern:'Inbox + working draft',description:'Keep your inbox in view while reading, replying, or drafting on the other side. Search, star, archive, and export real local messages.',boundary:'Mail is local sample data. Save to Sent never sends an email and does not connect to Google.'},ctx=>{
- const {root}=ctx;const blank=()=>({to:'',subject:'',body:'',attachment:null});const seed={messages:structuredClone(D.seedMail),selected:'m1',folder:'inbox',query:'',composing:false,draft:blank()};let s=ctx.get(seed);
- const current=()=>s.messages.find(m=>m.id===s.selected);const folders=[['inbox','Inbox'],['starred','Starred'],['sent','Sent'],['drafts','Drafts'],['archive','Archive'],['trash','Trash']];
- function list(){const q=s.query.trim().toLowerCase();return s.messages.filter(m=>(s.folder==='starred'?m.star&&m.folder!=='trash':m.folder===s.folder)&&(!q||[m.from,m.email,m.subject,m.body].join(' ').toLowerCase().includes(q)));}
- function renderList(){const h=D.$('.mail-list',root);if(!h)return;if(s.folder==='drafts'){h.innerHTML=s.draft.to||s.draft.subject||s.draft.body?`<button class="mail-row" data-action="open-draft" style="width:100%">${D.avatar('Draft')}<div class="flex"><b>Draft · not sent</b><div class="mail-subject">${D.escape(s.draft.subject||'New message')}</div><p class="mail-preview">${D.escape(s.draft.body)}</p></div></button>`:D.empty('edit','A clean slate','Your unsent draft appears here.');return;}h.innerHTML=list().map(m=>`<article class="mail-row ${s.selected===m.id&&!s.composing?'active':''} ${m.unread?'unread':''}" data-action="select" data-id="${D.escape(m.id)}" tabindex="0" role="button" aria-label="Read ${D.escape(m.subject)}">${D.avatar(m.from)}<div class="flex"><b>${D.escape(m.from)}</b><div class="mail-subject">${D.escape(m.subject)}</div><p class="mail-preview">${D.escape(m.preview||m.body)}</p></div><div><span class="mail-time">${D.escape(m.time)}</span><button class="star-btn ${m.star?'starred':''}" data-action="star" data-id="${D.escape(m.id)}" aria-label="${m.star?'Unstar':'Star'} message">${D.icon('star')}</button></div></article>`).join('')||D.empty('mail','Nothing here','Try another folder or a different search.');}
- function reader(){const m=current();if(s.composing)return `<form class="mail-compose" data-form="compose"><div class="mail-compose-title row"><b class="flex">${s.draft.subject?'Working draft':'New message'}</b>${D.ib('close-draft','close','Keep draft and close')}</div><div class="mail-compose-field"><label for="mail-to-${ctx.instanceId}">To</label><input id="mail-to-${ctx.instanceId}" name="to" type="email" required placeholder="name@example.com" value="${D.escape(s.draft.to)}" autocomplete="email"></div><div class="mail-compose-field"><label for="mail-subject-${ctx.instanceId}">Subject</label><input id="mail-subject-${ctx.instanceId}" name="subject" required placeholder="A little more possibility" value="${D.escape(s.draft.subject)}"></div><textarea name="body" aria-label="Message body" required placeholder="Make room for your next idea…">${D.escape(s.draft.body)}</textarea>${s.draft.attachment?`<div class="attachment-chip">${D.icon('attach',15)}<span>${D.escape(s.draft.attachment.name)}</span>${D.ib('remove-attachment','close','Remove attachment')}</div>`:''}<div class="mail-compose-footer"><button type="submit" class="btn primary">${D.icon('send',16)}Save to Sent</button>${D.ib('attach','attach','Attach text or image')}${D.ib('discard','trash','Discard draft')}<span class="flex"></span><small>LOCAL ONLY · NEVER EMAILED</small></div></form>`;
- if(!m)return D.empty('mail','Your next thought, unfolded','Select a message or start a fresh draft.');return `<div class="toolbar">${D.ib('archive','archive',m.folder==='archive'?'Move to inbox':'Archive message')}${D.ib('delete','trash',m.folder==='trash'?'Restore to inbox':'Move to Trash')}${D.ib('unread','mail',m.unread?'Mark as read':'Mark as unread')}${D.ib('export-message','download','Export message as EML')}<span class="flex"></span><span class="muted" style="font-size:10px">${D.escape(m.folder)}</span></div><div class="scroll flex"><div class="mail-message-header"><h1>${D.escape(m.subject)}</h1><div class="row">${D.avatar(m.from)}<div class="sender"><b>${D.escape(m.from)}</b><p>${D.escape(m.email)} · ${D.escape(m.time)}</p></div></div></div><div class="mail-message-body">${D.escape(m.body)}</div>${m.art?`<div class="mail-attachment">${D.image(m.art,m.subject)}<p>Original sample artwork · included offline</p></div>`:''}${m.attachment?`<div class="mail-attachment"><p>${D.icon('attach',14)} ${D.escape(m.attachment.name)} · local attachment</p></div>`:''}<div class="mail-reply-actions">${D.btn('reply','back','Reply')}${D.btn('forward','arrow','Forward')}</div></div>`;}
- function render(){s=ctx.get(seed);root.innerHTML=D.appHeader('gmail','Space to read. Room to reply.',D.btn('compose','edit','Compose','small primary'))+D.paneTabs('Inbox',s.composing?'Draft':'Message')+`<div class="duo-panes gmail-panes"><section class="pane primary-pane"><div class="mail-search"><label class="search-field">${D.icon('search',17)}<input name="search" aria-label="Search local mail" placeholder="Search in mail" value="${D.escape(s.query)}"></label></div><div class="mail-top"><h2>${D.escape(folders.find(f=>f[0]===s.folder)?.[1]||'Inbox')}</h2><span class="muted" style="font-size:10px">${s.messages.filter(m=>m.unread&&m.folder==='inbox').length} unread</span></div><div class="chip-row">${folders.map(([id,name])=>`<button class="chip ${s.folder===id?'active':''}" data-action="folder" data-folder="${id}">${name}</button>`).join('')}</div><div class="mail-list scroll flex"></div><div class="local-note">${D.icon('lock',12)} A private, offline sample mailbox</div></section><section class="pane secondary-pane mail-message">${reader()}</section></div>`;renderList();ctx.pane(root.dataset.activePane||'primary');}
- function compose(initial){s.composing=true;if(initial)s.draft={...blank(),...initial};ctx.save();render();ctx.pane('secondary');setTimeout(()=>D.$('[name="to"]',root)?.focus(),10);}
- ctx.act('compose',()=>compose());ctx.act('open-draft',()=>compose());ctx.act('close-draft',()=>{s.composing=false;ctx.save();render();});ctx.act('folder',b=>{s.folder=b.dataset.folder;ctx.save();render();ctx.pane('primary');});
- ctx.act('select',b=>{const m=s.messages.find(m=>m.id===b.dataset.id);if(!m)return;m.unread=false;s.selected=m.id;s.composing=false;ctx.save();render();ctx.pane('secondary');});
- ctx.act('star',(b,e)=>{e.stopPropagation();const m=s.messages.find(m=>m.id===b.dataset.id);if(m){m.star=!m.star;ctx.save();renderList();}});
- const move=folder=>{const m=current();if(!m)return;D.store.checkpoint('gmail');m.folder=m.folder===folder?'inbox':folder;ctx.save();render();D.toast(`Moved to ${m.folder}`,{label:'Undo',run:()=>D.store.undo()});};ctx.act('archive',()=>move('archive'));ctx.act('delete',()=>move('trash'));ctx.act('unread',()=>{const m=current();if(m){m.unread=!m.unread;ctx.save();render();}});
- ctx.act('reply',()=>{const m=current();if(m)compose({to:m.email,subject:`Re: ${m.subject.replace(/^Re: /,'')}`,body:`\n\n—\n${m.from} wrote:\n${m.body.split('\n').map(l=>'> '+l).join('\n')}`});});
- ctx.act('forward',()=>{const m=current();if(m)compose({subject:`Fwd: ${m.subject}`,body:`\n\n— Forwarded local message —\nFrom: ${m.from} <${m.email}>\nSubject: ${m.subject}\n\n${m.body}`});});
- ctx.act('discard',()=>{D.store.checkpoint('gmail');s.draft=blank();s.composing=false;ctx.save();render();D.toast('Draft discarded',{label:'Undo',run:()=>D.store.undo()});});
- ctx.act('remove-attachment',()=>{s.draft.attachment=null;ctx.save();render();});
- ctx.act('attach',()=>{const input=document.createElement('input');input.type='file';input.accept='.txt,.md,.json,image/png,image/jpeg,image/webp';input.onchange=async()=>{const f=input.files[0];if(!f)return;try{let data;if(f.type.startsWith('image/'))data=await D.readImage(f);else{if(f.size>100000)throw Error('Choose a text attachment smaller than 100 KB.');data=await f.text();}s.draft.attachment={name:f.name,type:f.type,data};ctx.save();render();D.toast('Attached to your local draft');}catch(e){D.toast(e.message);}};input.click();});
- ctx.act('export-message',()=>{const m=current();if(!m)return;const clean=x=>String(x).replace(/[\r\n]/g,' ');const body=`From: ${clean(m.from)} <${clean(m.email)}>\r\nTo: You <you@example.com>\r\nSubject: ${clean(m.subject)}\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\nX-Duo-Local-Prototype: true\r\n\r\n${m.body.replace(/\r?\n/g,'\r\n')}`;D.download('duo-local-message.eml',body,'message/rfc822');});
- ctx.act('share-app',()=>{const m=current();ctx.share(s.composing?s.draft.body:m?.body||'Local inbox',s.composing?s.draft.subject:m?.subject);});
- ctx.scope.on(root,'input',e=>{if(e.target.name==='search'){s.query=e.target.value;ctx.save();renderList();}else if(e.target.closest('[data-form="compose"]')&&['to','subject','body'].includes(e.target.name)){s.draft[e.target.name]=e.target.value;ctx.save();}});
- ctx.scope.on(root,'submit',e=>{if(!e.target.matches('[data-form="compose"]'))return;e.preventDefault();if(!e.target.reportValidity())return;D.store.checkpoint('gmail');const draft=s.draft,id=D.uid();s.messages.unshift({id,from:'You',email:'you@example.com',to:draft.to,subject:draft.subject,body:draft.body,preview:draft.body.slice(0,100),time:'Now',unread:false,star:false,folder:'sent',attachment:draft.attachment});s.draft=blank();s.composing=false;s.folder='sent';s.selected=id;ctx.save();render();ctx.pane('secondary');D.toast('Saved to Sent locally. No email was sent.');});
- ctx.scope.on(root,'keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('.mail-row')){e.preventDefault();e.target.click();}});
- function receive(a){compose({subject:a.title||'Shared from Duo',body:a.text||''});D.toast('Shared content is ready in your draft');}
- ctx.scope.cleanup(D.wrapDrop(root,receive));render();return {render,receive};
-});})(window.Duo);
+(function (D) {
+    'use strict';
+    D.SDK.register({ id: 'gmail', name: 'Gmail', rank: 9, category: 'Productivity', pattern: 'Inbox + working draft', description: 'Keep your inbox in view while reading, replying, or drafting on the other side. Search, star, archive, and export real local messages.', boundary: 'Mail is local sample data. Save to Sent never sends an email and does not connect to Google.' }, D.SDK.UIViewRepresentable(ctx => {
+        const { root } = ctx;
+        const blank = () => ({ to: '', subject: '', body: '', attachment: null });
+        const seed = { messages: structuredClone(D.seedMail), selected: 'm1', folder: 'inbox', query: '', composing: false, draft: blank() };
+        let s = ctx.get(seed);
+        const current = () => s.messages.find(m => m.id === s.selected);
+        const folders = [['inbox', 'Inbox'], ['starred', 'Starred'], ['sent', 'Sent'], ['drafts', 'Drafts'], ['archive', 'Archive'], ['trash', 'Trash']];
+        function list() { const q = s.query.trim().toLowerCase(); return s.messages.filter(m => (s.folder === 'starred' ? m.star && m.folder !== 'trash' : m.folder === s.folder) && (!q || [m.from, m.email, m.subject, m.body].join(' ').toLowerCase().includes(q))); }
+        function renderList() { const h = D.$('.mail-list', root); if (!h)
+            return; if (s.folder === 'drafts') {
+            h.innerHTML = s.draft.to || s.draft.subject || s.draft.body ? `<button class="mail-row" data-action="open-draft" style="width:100%">${D.avatar('Draft')}<div class="flex"><b>Draft · not sent</b><div class="mail-subject">${D.escape(s.draft.subject || 'New message')}</div><p class="mail-preview">${D.escape(s.draft.body)}</p></div></button>` : D.empty('edit', 'A clean slate', 'Your unsent draft appears here.');
+            return;
+        } h.innerHTML = list().map(m => `<article class="mail-row ${s.selected === m.id && !s.composing ? 'active' : ''} ${m.unread ? 'unread' : ''}" data-action="select" data-id="${D.escape(m.id)}" tabindex="0" role="button" aria-label="Read ${D.escape(m.subject)}">${D.avatar(m.from)}<div class="flex"><b>${D.escape(m.from)}</b><div class="mail-subject">${D.escape(m.subject)}</div><p class="mail-preview">${D.escape(m.preview || m.body)}</p></div><div><span class="mail-time">${D.escape(m.time)}</span><button class="star-btn ${m.star ? 'starred' : ''}" data-action="star" data-id="${D.escape(m.id)}" aria-label="${m.star ? 'Unstar' : 'Star'} message">${D.icon('star')}</button></div></article>`).join('') || D.empty('mail', 'Nothing here', 'Try another folder or a different search.'); }
+        function reader() {
+            const m = current();
+            if (s.composing)
+                return `<form class="mail-compose" data-form="compose"><div class="mail-compose-title row"><b class="flex">${s.draft.subject ? 'Working draft' : 'New message'}</b>${D.ib('close-draft', 'close', 'Keep draft and close')}</div><div class="mail-compose-field"><label for="mail-to-${ctx.instanceId}">To</label><input id="mail-to-${ctx.instanceId}" name="to" type="email" required placeholder="name@example.com" value="${D.escape(s.draft.to)}" autocomplete="email"></div><div class="mail-compose-field"><label for="mail-subject-${ctx.instanceId}">Subject</label><input id="mail-subject-${ctx.instanceId}" name="subject" required placeholder="A little more possibility" value="${D.escape(s.draft.subject)}"></div><textarea name="body" aria-label="Message body" required placeholder="Make room for your next idea…">${D.escape(s.draft.body)}</textarea>${s.draft.attachment ? `<div class="attachment-chip">${D.icon('attach', 15)}<span>${D.escape(s.draft.attachment.name)}</span>${D.ib('remove-attachment', 'close', 'Remove attachment')}</div>` : ''}<div class="mail-compose-footer"><button type="submit" class="btn primary">${D.icon('send', 16)}Save to Sent</button>${D.ib('attach', 'attach', 'Attach text or image')}${D.ib('discard', 'trash', 'Discard draft')}<span class="flex"></span><small>LOCAL ONLY · NEVER EMAILED</small></div></form>`;
+            if (!m)
+                return D.empty('mail', 'Your next thought, unfolded', 'Select a message or start a fresh draft.');
+            return `<div class="toolbar">${D.ib('archive', 'archive', m.folder === 'archive' ? 'Move to inbox' : 'Archive message')}${D.ib('delete', 'trash', m.folder === 'trash' ? 'Restore to inbox' : 'Move to Trash')}${D.ib('unread', 'mail', m.unread ? 'Mark as read' : 'Mark as unread')}${D.ib('export-message', 'download', 'Export message as EML')}<span class="flex"></span><span class="muted" style="font-size:10px">${D.escape(m.folder)}</span></div><div class="scroll flex"><div class="mail-message-header"><h1>${D.escape(m.subject)}</h1><div class="row">${D.avatar(m.from)}<div class="sender"><b>${D.escape(m.from)}</b><p>${D.escape(m.email)} · ${D.escape(m.time)}</p></div></div></div><div class="mail-message-body">${D.escape(m.body)}</div>${m.art ? `<div class="mail-attachment">${D.image(m.art, m.subject)}<p>Original sample artwork · included offline</p></div>` : ''}${m.attachment ? `<div class="mail-attachment"><p>${D.icon('attach', 14)} ${D.escape(m.attachment.name)} · local attachment</p></div>` : ''}<div class="mail-reply-actions">${D.btn('reply', 'back', 'Reply')}${D.btn('forward', 'arrow', 'Forward')}</div></div>`;
+        }
+        function render() { s = ctx.get(seed); root.innerHTML = D.appHeader('gmail', 'Space to read. Room to reply.', D.btn('compose', 'edit', 'Compose', 'small primary')) + D.paneTabs('Inbox', s.composing ? 'Draft' : 'Message') + `<div class="duo-panes gmail-panes"><section class="pane primary-pane"><div class="mail-search"><label class="search-field">${D.icon('search', 17)}<input name="search" aria-label="Search local mail" placeholder="Search in mail" value="${D.escape(s.query)}"></label></div><div class="mail-top"><h2>${D.escape(folders.find(f => f[0] === s.folder)?.[1] || 'Inbox')}</h2><span class="muted" style="font-size:10px">${s.messages.filter(m => m.unread && m.folder === 'inbox').length} unread</span></div><div class="chip-row">${folders.map(([id, name]) => `<button class="chip ${s.folder === id ? 'active' : ''}" data-action="folder" data-folder="${id}">${name}</button>`).join('')}</div><div class="mail-list scroll flex"></div><div class="local-note">${D.icon('lock', 12)} A private, offline sample mailbox</div></section><section class="pane secondary-pane mail-message">${reader()}</section></div>`; renderList(); ctx.pane(root.dataset.activePane || 'primary'); }
+        function compose(initial) { s.composing = true; if (initial)
+            s.draft = { ...blank(), ...initial }; ctx.save(); render(); ctx.pane('secondary'); setTimeout(() => D.$('[name="to"]', root)?.focus(), 10); }
+        ctx.act('compose', () => compose());
+        ctx.act('open-draft', () => compose());
+        ctx.act('close-draft', () => { s.composing = false; ctx.save(); render(); });
+        ctx.act('folder', b => { s.folder = b.dataset.folder; ctx.save(); render(); ctx.pane('primary'); });
+        ctx.act('select', b => { const m = s.messages.find(m => m.id === b.dataset.id); if (!m)
+            return; m.unread = false; s.selected = m.id; s.composing = false; ctx.save(); render(); ctx.pane('secondary'); });
+        ctx.act('star', (b, e) => { e.stopPropagation(); const m = s.messages.find(m => m.id === b.dataset.id); if (m) {
+            m.star = !m.star;
+            ctx.save();
+            renderList();
+        } });
+        const move = folder => { const m = current(); if (!m)
+            return; D.store.checkpoint('gmail'); m.folder = m.folder === folder ? 'inbox' : folder; ctx.save(); render(); D.toast(`Moved to ${m.folder}`, { label: 'Undo', run: () => D.store.undo() }); };
+        ctx.act('archive', () => move('archive'));
+        ctx.act('delete', () => move('trash'));
+        ctx.act('unread', () => { const m = current(); if (m) {
+            m.unread = !m.unread;
+            ctx.save();
+            render();
+        } });
+        ctx.act('reply', () => { const m = current(); if (m)
+            compose({ to: m.email, subject: `Re: ${m.subject.replace(/^Re: /, '')}`, body: `\n\n—\n${m.from} wrote:\n${m.body.split('\n').map(l => '> ' + l).join('\n')}` }); });
+        ctx.act('forward', () => { const m = current(); if (m)
+            compose({ subject: `Fwd: ${m.subject}`, body: `\n\n— Forwarded local message —\nFrom: ${m.from} <${m.email}>\nSubject: ${m.subject}\n\n${m.body}` }); });
+        ctx.act('discard', () => { D.store.checkpoint('gmail'); s.draft = blank(); s.composing = false; ctx.save(); render(); D.toast('Draft discarded', { label: 'Undo', run: () => D.store.undo() }); });
+        ctx.act('remove-attachment', () => { s.draft.attachment = null; ctx.save(); render(); });
+        ctx.act('attach', () => { const input = document.createElement('input'); input.type = 'file'; input.accept = '.txt,.md,.json,image/png,image/jpeg,image/webp'; input.onchange = async () => { const f = input.files[0]; if (!f)
+            return; try {
+            let data;
+            if (f.type.startsWith('image/'))
+                data = await D.readImage(f);
+            else {
+                if (f.size > 100000)
+                    throw Error('Choose a text attachment smaller than 100 KB.');
+                data = await f.text();
+            }
+            s.draft.attachment = { name: f.name, type: f.type, data };
+            ctx.save();
+            render();
+            D.toast('Attached to your local draft');
+        }
+        catch (e) {
+            D.toast(e.message);
+        } }; input.click(); });
+        ctx.act('export-message', () => { const m = current(); if (!m)
+            return; const clean = x => String(x).replace(/[\r\n]/g, ' '); const body = `From: ${clean(m.from)} <${clean(m.email)}>\r\nTo: You <you@example.com>\r\nSubject: ${clean(m.subject)}\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\nX-Duo-Local-Prototype: true\r\n\r\n${m.body.replace(/\r?\n/g, '\r\n')}`; D.download('duo-local-message.eml', body, 'message/rfc822'); });
+        ctx.act('share-app', () => { const m = current(); ctx.share(s.composing ? s.draft.body : m?.body || 'Local inbox', s.composing ? s.draft.subject : m?.subject); });
+        ctx.scope.on(root, 'input', e => { if (e.target.name === 'search') {
+            s.query = e.target.value;
+            ctx.save();
+            renderList();
+        }
+        else if (e.target.closest('[data-form="compose"]') && ['to', 'subject', 'body'].includes(e.target.name)) {
+            s.draft[e.target.name] = e.target.value;
+            ctx.save();
+        } });
+        ctx.scope.on(root, 'submit', e => { if (!e.target.matches('[data-form="compose"]'))
+            return; e.preventDefault(); if (!e.target.reportValidity())
+            return; D.store.checkpoint('gmail'); const draft = s.draft, id = D.uid(); s.messages.unshift({ id, from: 'You', email: 'you@example.com', to: draft.to, subject: draft.subject, body: draft.body, preview: draft.body.slice(0, 100), time: 'Now', unread: false, star: false, folder: 'sent', attachment: draft.attachment }); s.draft = blank(); s.composing = false; s.folder = 'sent'; s.selected = id; ctx.save(); render(); ctx.pane('secondary'); D.toast('Saved to Sent locally. No email was sent.'); });
+        ctx.scope.on(root, 'keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('.mail-row')) {
+            e.preventDefault();
+            e.target.click();
+        } });
+        function receive(a) { compose({ subject: a.title || 'Shared from Duo', body: a.text || '' }); D.toast('Shared content is ready in your draft'); }
+        ctx.scope.cleanup(D.wrapDrop(root, receive));
+        render();
+        return { render, receive };
+    }));
+})(window.Duo);
