@@ -4,3 +4,8 @@ __pycache__/
 node_modules/
 *.log
 screenshots/failure-*.png
+__pycache__/
+*.pyc
+_site/
+tests/export-fixture.*
+screenshots/failure-*.png

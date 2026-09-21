@@ -1,23 +1,11 @@
-# Repository and GitHub Pages deployment
+# GitHub Pages deployment
 
-Repository: https://github.com/wieslawsoltes/DuoStudio
+Repository: `wieslawsoltes/DuoStudio`; branch: `main`. Public root: `https://wieslawsoltes.github.io/DuoStudio/`.
 
-Pages destination: https://wieslawsoltes.github.io/DuoStudio/
+The Actions workflow checks out source, builds the standalone HTML/PWA, validates source, runs original/creative/hosted tests, captures the gallery, and packages complete sources with CRC/SHA-256 verification. PRs upload validation reports and test screenshots without deploying. Main builds stage `dist`, documentation, screenshots and downloadable archives as a Pages artifact. The deploy job uses Pages write + OIDC permissions only.
 
-The site serves `dist/index.html` as its entry point. It is self-contained: scripts, styles, icons, original artwork and playable demo videos are embedded, with no CDN or application backend required. WebGPU is detected at runtime and Canvas 2D remains available when it is unsupported. These are independent local app prototypes; no messages or email are transmitted and no commercial AI or map service is contacted.
+`verify-pages.yml` runs after a successful deployment workflow and checks the public HTML, the embedded twenty-app inventory, build SHA-256 and every source archive entry. Deployment success is distinct from native-device certification.
 
-## Continuous integration
+`duo-studio.html` is a fully embedded standalone file. `manifest.webmanifest`, `sw.js` and two original icons are separate hosted installation files. Their URLs are relative so the project works under a GitHub Pages subdirectory. Service-worker registration is opt-in via Device lab. Rebuild changes the cache version using the HTML digest; a newly installed worker takes over after old clients close unless explicitly activated.
 
-`.github/workflows/pages.yml` builds the standalone HTML, runs the source checks and Chromium interaction tests, captures all eight simulator screenshots, creates a complete source ZIP, and uploads the Pages artifact. Pull requests validate without deploying. Pushes to `main` and manual workflow dispatches deploy after validation.
-
-The workflow requests only repository contents access for the initial import and Pages/OIDC permissions in its deployment job. It contains no user tokens or credentials. GitHub Pages must be enabled for the repository; the configure-pages action attempts initial enablement, which remains subject to GitHub's token permissions and account policies.
-
-Published files include `/duo-studio.html`, `/downloads/duo-studio-source.zip`, `/downloads/duo-studio-source.zip.sha256`, and `/downloads/source-manifest.json` beneath the repository's Pages URL. The source ZIP includes the readable sources, media, screenshots, tests, documentation, CI workflow and standalone app, with a per-file SHA-256 inventory. ZIP contents are round-trip verified during packaging.
-
-## Import provenance
-
-The delivered readable source files were transferred in a lossless XZ archive with SHA-256 `1895503ad91960f177ecd321cc31c5cc47984c309c43837f5ae0867ed16d3998`. The one-time importer verifies this digest, extracts the readable files, uses the included original asset generator to regenerate the media, and reruns the build, tests and screenshot capture. It then commits the expanded files and removes the temporary transfer directory. The regenerated media, screenshot captures, build reports and source ZIP may differ byte-for-byte from the original conversation downloads because of encoder, browser, timing or dependency versions. They are not claimed to be the original binary archive.
-
-## Local development
-
-Run `python3 scripts/serve.py` from the repository root and open the URL printed by the server. To rebuild, run `python3 scripts/build.py` and `node scripts/check.mjs`. Browser tests require the dependencies in `requirements-dev.txt` and an installed Chromium binary. Asset regeneration is optional and requires `requirements-assets.txt` plus FFmpeg. The committed media and standalone HTML can be used without regenerating anything.
+Cabinet content, document edits and generated exports remain in each browser, not in GitHub. No secret, API credential or server-side service is required.

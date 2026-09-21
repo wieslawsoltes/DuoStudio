@@ -1,0 +1,399 @@
+{
+  "passed": 77,
+  "failed": 0,
+  "results": [
+    {
+      "test": "draftline: usable mounted panes",
+      "passed": true,
+      "ms": 103
+    },
+    {
+      "test": "scenelab: usable mounted panes",
+      "passed": true,
+      "ms": 106
+    },
+    {
+      "test": "polyform: usable mounted panes",
+      "passed": true,
+      "ms": 102
+    },
+    {
+      "test": "pulse: usable mounted panes",
+      "passed": true,
+      "ms": 100
+    },
+    {
+      "test": "cutroom: usable mounted panes",
+      "passed": true,
+      "ms": 117
+    },
+    {
+      "test": "folio: usable mounted panes",
+      "passed": true,
+      "ms": 99
+    },
+    {
+      "test": "gridsheet: usable mounted panes",
+      "passed": true,
+      "ms": 122
+    },
+    {
+      "test": "keydeck: usable mounted panes",
+      "passed": true,
+      "ms": 100
+    },
+    {
+      "test": "inkpad: usable mounted panes",
+      "passed": true,
+      "ms": 99
+    },
+    {
+      "test": "arcade: usable mounted panes",
+      "passed": true,
+      "ms": 98
+    },
+    {
+      "test": "All twenty model seeds satisfy session schema",
+      "passed": true,
+      "ms": 3
+    },
+    {
+      "test": "Formula: precedence",
+      "passed": true,
+      "ms": 1
+    },
+    {
+      "test": "Formula: right associative powers",
+      "passed": true,
+      "ms": 1
+    },
+    {
+      "test": "Formula: unary exponent",
+      "passed": true,
+      "ms": 1
+    },
+    {
+      "test": "Formula: percent",
+      "passed": true,
+      "ms": 1
+    },
+    {
+      "test": "Formula: lazy IF",
+      "passed": true,
+      "ms": 1
+    },
+    {
+      "test": "Formula: IFERROR",
+      "passed": true,
+      "ms": 2
+    },
+    {
+      "test": "Formula: text",
+      "passed": true,
+      "ms": 1
+    },
+    {
+      "test": "Formula: range SUM",
+      "passed": true,
+      "ms": 1
+    },
+    {
+      "test": "Formula: average",
+      "passed": true,
+      "ms": 1
+    },
+    {
+      "test": "Formula: range COUNT",
+      "passed": true,
+      "ms": 1
+    },
+    {
+      "test": "Formula: division zero",
+      "passed": true,
+      "ms": 1
+    },
+    {
+      "test": "Formula: negative sqrt",
+      "passed": true,
+      "ms": 1
+    },
+    {
+      "test": "Formula: unknown function",
+      "passed": true,
+      "ms": 1
+    },
+    {
+      "test": "Formula: invalid reference",
+      "passed": true,
+      "ms": 1
+    },
+    {
+      "test": "Formula: cycle",
+      "passed": true,
+      "ms": 1
+    },
+    {
+      "test": "Formula: syntax rejection",
+      "passed": true,
+      "ms": 1
+    },
+    {
+      "test": "Formula fill preserves absolute references and quoted text",
+      "passed": true,
+      "ms": 1
+    },
+    {
+      "test": "Formula malicious syntax cannot access host objects",
+      "passed": true,
+      "ms": 1
+    },
+    {
+      "test": "CSV round trip preserves delimiter, quotes, multiline cells",
+      "passed": true,
+      "ms": 1
+    },
+    {
+      "test": "CSV rejects unclosed quoted cell",
+      "passed": true,
+      "ms": 1
+    },
+    {
+      "test": "CAD command, duplicate, scoped undo and redo",
+      "passed": true,
+      "ms": 161
+    },
+    {
+      "test": "CAD DXF: lines, circles, rectangles and text round trip",
+      "passed": true,
+      "ms": 2
+    },
+    {
+      "test": "CAD SVG output parses without XML errors",
+      "passed": true,
+      "ms": 6
+    },
+    {
+      "test": "Maps handoff creates connected CAD route segments",
+      "passed": true,
+      "ms": 244
+    },
+    {
+      "test": "Concave polygon ear clipping and closed extrusion",
+      "passed": true,
+      "ms": 2
+    },
+    {
+      "test": "OBJ negative indices and quad triangulation",
+      "passed": true,
+      "ms": 1
+    },
+    {
+      "test": "OBJ rejects invalid face indices",
+      "passed": true,
+      "ms": 1
+    },
+    {
+      "test": "SceneLab add, duplicate and delete actual geometry",
+      "passed": true,
+      "ms": 128
+    },
+    {
+      "test": "Scene OBJ/STL exports contain transformed triangles",
+      "passed": true,
+      "ms": 13
+    },
+    {
+      "test": "Polyform generates mesh and transfers into SceneLab",
+      "passed": true,
+      "ms": 361
+    },
+    {
+      "test": "Pulse edits steps, schedules audio, tolerates double Play, stops hidden",
+      "passed": true,
+      "ms": 495
+    },
+    {
+      "test": "Offline audio bounce contains audible stereo PCM and correct WAV header",
+      "passed": true,
+      "ms": 75
+    },
+    {
+      "test": "MIDI export has SMF header, tempo and note messages",
+      "passed": true,
+      "ms": 3
+    },
+    {
+      "test": "YouTube film handoff appends an editable timeline clip",
+      "passed": true,
+      "ms": 390
+    },
+    {
+      "test": "Cutroom seeks and splits real source media",
+      "passed": true,
+      "ms": 318
+    },
+    {
+      "test": "GridSheet formula-bar editing recalculates dependencies",
+      "passed": true,
+      "ms": 196
+    },
+    {
+      "test": "GridSheet range-fill translates relative formulas",
+      "passed": true,
+      "ms": 50
+    },
+    {
+      "test": "GridSheet virtualizes cell DOM",
+      "passed": true,
+      "ms": 2
+    },
+    {
+      "test": "DOCX: independently validated ZIP CRC and XML package",
+      "passed": true,
+      "ms": 5
+    },
+    {
+      "test": "XLSX: independently validated ZIP CRC and XML package",
+      "passed": true,
+      "ms": 4
+    },
+    {
+      "test": "PPTX: independently validated ZIP CRC and XML package",
+      "passed": true,
+      "ms": 6
+    },
+    {
+      "test": "DOCX re-import preserves document text",
+      "passed": true,
+      "ms": 4
+    },
+    {
+      "test": "XLSX re-import preserves formulas and values",
+      "passed": true,
+      "ms": 3
+    },
+    {
+      "test": "PPTX re-import preserves all slide titles",
+      "passed": true,
+      "ms": 4
+    },
+    {
+      "test": "ZIP reader rejects CRC corruption",
+      "passed": true,
+      "ms": 2
+    },
+    {
+      "test": "ZIP reader rejects path traversal",
+      "passed": true,
+      "ms": 1
+    },
+    {
+      "test": "Keydeck adds slides, edits content and undoes changes",
+      "passed": true,
+      "ms": 159
+    },
+    {
+      "test": "Keydeck SVG and standalone deck are substantive exports",
+      "passed": true,
+      "ms": 2
+    },
+    {
+      "test": "Inkpad pressure-path painting persists pixels and supports layer undo",
+      "passed": true,
+      "ms": 644
+    },
+    {
+      "test": "Inkpad shares a composed image into Instagram",
+      "passed": true,
+      "ms": 334
+    },
+    {
+      "test": "2048 merges each tile only once per move",
+      "passed": true,
+      "ms": 1
+    },
+    {
+      "test": "Arcade games simulate, switch, and suspend on Home/Lock",
+      "passed": true,
+      "ms": 646
+    },
+    {
+      "test": "Files cabinet saves projects and atomically merges binary records",
+      "passed": true,
+      "ms": 104
+    },
+    {
+      "test": "Full backup ZIP round trip includes session and file bytes",
+      "passed": true,
+      "ms": 14
+    },
+    {
+      "test": "Launcher category filtering preserves twenty installed apps",
+      "passed": true,
+      "ms": 124
+    },
+    {
+      "test": "Spotlight searches and launches creative apps using keyboard",
+      "passed": true,
+      "ms": 204
+    },
+    {
+      "test": "Vertical Split View has directional keyboard resizing",
+      "passed": true,
+      "ms": 124
+    },
+    {
+      "test": "Ten creative apps preserve instances through forty posture changes",
+      "passed": true,
+      "ms": 3145
+    },
+    {
+      "test": "All creative app panes remain reachable in direct-touch mode",
+      "passed": true,
+      "ms": 1711
+    },
+    {
+      "test": "Creative schemas reject invalid dimensions, rates and enumerations",
+      "passed": true,
+      "ms": 92
+    },
+    {
+      "test": "HTML sanitizer removes active content and unsafe URLs",
+      "passed": true,
+      "ms": 19
+    },
+    {
+      "test": "Scenario validator rejects executable or unknown event kinds",
+      "passed": true,
+      "ms": 10
+    },
+    {
+      "test": "Scenario recorder replays CAD mutation from saved starting state",
+      "passed": true,
+      "ms": 599
+    },
+    {
+      "test": "Cutroom records a real edited film that decodes and plays",
+      "passed": true,
+      "ms": 1575
+    },
+    {
+      "test": "Final models remain valid after editing, transfers and undo",
+      "passed": true,
+      "ms": 4
+    },
+    {
+      "test": "No unexpected JavaScript exceptions",
+      "passed": true,
+      "ms": 0
+    }
+  ],
+  "pageErrors": [],
+  "environment": {
+    "secureContext": false,
+    "webGPU": false,
+    "renderer": "Canvas 2D",
+    "persistentStorage": false,
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+  }
+}

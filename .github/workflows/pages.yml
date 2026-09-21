@@ -1,148 +1,80 @@
 name: Build and deploy Duo Studio
-
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
   workflow_dispatch:
-
+permissions:
+  contents: read
 concurrency:
   group: duo-studio-${{ github.ref }}
   cancel-in-progress: false
-
-permissions:
-  contents: read
-
 jobs:
   build:
     runs-on: ubuntu-24.04
-    timeout-minutes: 25
-    permissions:
-      contents: write
-    outputs:
-      ready: ${{ steps.ready.outputs.ready }}
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
-      - name: Check source availability
-        id: ready
-        shell: bash
-        run: |
-          if test -f src/template.html || test -f .import/READY; then
-            echo 'ready=true' >> "$GITHUB_OUTPUT"
-          else
-            echo 'ready=false' >> "$GITHUB_OUTPUT"
-            echo 'Source import has not been committed yet.' >> "$GITHUB_STEP_SUMMARY"
-          fi
       - uses: actions/setup-python@v5
-        if: steps.ready.outputs.ready == 'true'
         with:
           python-version: '3.12'
-      - name: Restore checksum-verified source package
-        if: steps.ready.outputs.ready == 'true'
-        shell: bash
-        run: |
-          if test ! -f src/template.html; then
-            python3 - <<'PY'
-          import base64, hashlib, io, lzma, tarfile
-          from pathlib import Path
-          parts = sorted(Path('.import').glob('*.b64'))
-          if len(parts) != 8:
-              raise SystemExit('Expected all eight source transfer parts')
-          data = base64.b64decode(''.join(p.read_text().strip() for p in parts), validate=True)
-          expected = '1895503ad91960f177ecd321cc31c5cc47984c309c43837f5ae0867ed16d3998'
-          if hashlib.sha256(data).hexdigest() != expected:
-              raise SystemExit('Source archive SHA-256 mismatch')
-          with tarfile.open(fileobj=io.BytesIO(lzma.decompress(data)), mode='r:') as archive:
-              archive.extractall('.', filter='data')
-          print('Original readable sources restored and SHA-256 verified.')
-          PY
-          fi
       - uses: actions/setup-node@v4
-        if: steps.ready.outputs.ready == 'true'
         with:
           node-version: '22'
-      - name: Generate original media when importing
-        if: steps.ready.outputs.ready == 'true'
-        shell: bash
-        run: |
-          if test ! -f assets/dunes.mp4; then
-            python3 -m pip install -r requirements-assets.txt
-            command -v ffmpeg || (sudo apt-get update && sudo apt-get install -y ffmpeg)
-            python3 scripts/generate_assets.py
-          fi
-      - name: Build standalone app and run source checks
-        if: steps.ready.outputs.ready == 'true'
+      - name: Build standalone app, PWA and source checks
         run: |
           python3 scripts/build.py
           node scripts/check.mjs
       - name: Install browser test tools
-        if: steps.ready.outputs.ready == 'true'
         run: |
           python3 -m pip install -r requirements-dev.txt
           python3 -m playwright install --with-deps chromium
           python3 - <<'PY'
           import os
           from playwright.sync_api import sync_playwright
-          with sync_playwright() as pw:
-              with open(os.environ['GITHUB_ENV'], 'a') as out:
-                  out.write('CHROMIUM=' + pw.chromium.executable_path + '\n')
+          with sync_playwright() as p:
+              with open(os.environ['GITHUB_ENV'], 'a') as f:
+                  f.write('CHROMIUM=' + p.chromium.executable_path + '\n')
           PY
-      - name: Run browser interaction tests
-        if: steps.ready.outputs.ready == 'true'
-        run: |
-          mkdir -p screenshots
-          python3 tests/test_browser.py --chromium "$CHROMIUM"
-      - name: Capture the complete simulator gallery
-        if: steps.ready.outputs.ready == 'true'
-        run: python3 scripts/capture.py --chromium "$CHROMIUM"
-      - name: Package downloadable source and standalone artifacts
-        if: steps.ready.outputs.ready == 'true'
+      - name: Original app regressions
+        run: python3 tests/test_browser.py --chromium "$CHROMIUM"
+      - name: Creative apps, engines and simulator regressions
+        run: python3 tests/test_creative.py --chromium "$CHROMIUM"
+      - name: Hosted storage, WebGPU and offline installation
+        run: python3 tests/test_hosted.py --chromium "$CHROMIUM"
+      - name: Capture real simulator gallery
+        run: python3 scripts/capture_v2.py --chromium "$CHROMIUM"
+      - name: Package complete downloadable source
         run: python3 scripts/package_repository.py
-      - name: Commit expanded source and regenerated binaries on initial import
-        if: steps.ready.outputs.ready == 'true' && github.event_name != 'pull_request'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        shell: bash
-        run: |
-          if test -f .import/READY; then
-            git config user.name 'github-actions[bot]'
-            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git add src assets dist docs scripts tests screenshots releases README.md LICENSE package.json requirements-assets.txt requirements-dev.txt .gitignore duo-studio.html duo-studio-preview.png
-            git rm -r .import
-            git commit -m 'feat: import complete Duo Studio sources, generated media, gallery and offline distribution'
-            AUTH="$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
-            git -c "http.https://github.com/.extraheader=AUTHORIZATION: basic $AUTH" push origin HEAD:main
-          fi
-      - name: Stage GitHub Pages site
-        if: steps.ready.outputs.ready == 'true'
+      - name: Stage site
         run: |
           mkdir -p _site/downloads _site/screenshots
-          cp dist/index.html dist/duo-studio.html dist/build-manifest.json _site/
+          cp dist/* _site/
           cp releases/* _site/downloads/
           cp duo-studio-preview.png _site/
           cp screenshots/*.png _site/screenshots/
           cp -R docs _site/docs
           touch _site/.nojekyll
-      - name: Upload validation reports
-        if: always() && steps.ready.outputs.ready == 'true'
+      - name: Upload validation evidence
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: validation-reports
           path: |
             tests/*report.json
+            tests/export-fixture.*
             screenshots/failure-*.png
           if-no-files-found: ignore
       - name: Upload Pages artifact
-        if: steps.ready.outputs.ready == 'true' && github.event_name != 'pull_request'
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v4
         with:
           path: _site
-
   deploy:
-    if: needs.build.outputs.ready == 'true' && github.event_name != 'pull_request'
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     needs: build
     runs-on: ubuntu-24.04
     timeout-minutes: 10
@@ -153,10 +85,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
-        with:
-          enablement: true
+      - uses: actions/configure-pages@v5
       - name: Deploy simulator
         id: deployment
         uses: actions/deploy-pages@v4

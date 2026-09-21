@@ -1,7 +1,7 @@
 {
-  "version": "1.0.0",
-  "htmlBytes": 1916816,
-  "sha256": "26ab63b779bac4a23aafac0da1b1a9c30ec25ef1b7c527b7ada4980822894cf3",
+  "version": "2.0.0",
+  "htmlBytes": 2190771,
+  "sha256": "2dbcc44c3b484fde8fee812f3daf6935781f5ab841d75809696b3f374c6b7c9f",
   "assets": {
     "alpine.jpg": 118339,
     "alpine.mp4": 421138,
@@ -18,6 +18,12 @@
     "core.js",
     "data.js",
     "gpu.js",
+    "engines/studio.js",
+    "engines/formula.js",
+    "engines/formats.js",
+    "engines/geometry.js",
+    "engines/renderer3d.js",
+    "engines/audio.js",
     "apps/chatgpt.js",
     "apps/threads.js",
     "apps/google.js",
@@ -28,7 +34,19 @@
     "apps/maps.js",
     "apps/gmail.js",
     "apps/gemini.js",
-    "shell.js"
+    "apps/draftline.js",
+    "apps/scenelab.js",
+    "apps/polyform.js",
+    "apps/pulse.js",
+    "apps/cutroom.js",
+    "apps/folio.js",
+    "apps/gridsheet.js",
+    "apps/keydeck.js",
+    "apps/inkpad.js",
+    "apps/arcade.js",
+    "system/everyday.js",
+    "shell.js",
+    "system/simulator.js"
   ],
   "externalRuntimeDependencies": []
 }

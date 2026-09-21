@@ -39,8 +39,8 @@ with sync_playwright() as pw:
  def model(id):return ev('(id)=>Duo.store.data.apps[id]',id)
  def assert_true(v,msg='Assertion failed'):
   if not v:raise AssertionError(msg)
- check('Ten app modules registered',lambda:ev('Duo.apps.size===10'))
- check('Home contains ten apps and two system tiles',lambda:page.locator('#home-view .home-app').count()==12)
+ check('Twenty app modules registered',lambda:ev('Duo.apps.size===20'))
+ check('Home contains twenty apps and two system tiles',lambda:page.locator('#home-view .home-app').count()==22)
  check('Standalone contains no external scripts or styles',lambda:ev("!document.querySelector('script[src],link[rel=stylesheet]')"))
  for id in ['chatgpt','threads','google','tiktok','whatsapp','instagram','youtube','maps','gmail','gemini']:
   check(f'{id}: launch with two visible app panes',lambda id=id:(app(id),ev("id=>[...document.querySelectorAll('[data-app=\"'+id+'\"] .duo-panes > .pane')].every(p=>p.clientWidth>0&&p.clientHeight>0)",id))[1])
