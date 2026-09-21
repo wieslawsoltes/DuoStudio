@@ -1,14 +1,17 @@
 name: Apply verified sources
 on:
   push:
-    branches: ['feat/duokit-ide']
-    paths: ['.changes/READY']
+    branches: [feat/duokit-ide]
+    paths: [.changes/FINISH]
 permissions:
   contents: write
+concurrency:
+  group: duo-sdk-source-recovery
+  cancel-in-progress: false
 jobs:
   apply:
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v6
         with:
@@ -19,36 +22,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Restore checksum-verified source files and patches
-        run: |
-          python3 - <<'PY'
-          import base64, hashlib, json, lzma
-          from pathlib import Path, PurePosixPath
-          packed = base64.b64decode(''.join(p.read_text().strip() for p in sorted(Path('.changes').glob('*.b64'))), validate=True)
-          assert hashlib.sha256(packed).hexdigest() == Path('.changes/READY').read_text().strip(), 'Transfer checksum mismatch'
-          payload = json.loads(lzma.decompress(packed))
-          allowed = {'src','sdk','vendor','views','scripts','tests','docs','README.md','package.json','.gitignore'}
-          def safe(name):
-              p = PurePosixPath(name)
-              assert not p.is_absolute() and '..' not in p.parts and p.parts[0] in allowed, name
-              return Path(name)
-          for name, patch in payload['patches'].items():
-              target = safe(name)
-              original = target.read_bytes()
-              assert hashlib.sha256(original).hexdigest() == patch['before'], 'Baseline changed: ' + name
-              lines = original.decode().splitlines(keepends=True)
-              for start, end, replacement in reversed(patch['edits']):
-                  lines[start:end] = replacement
-              data = ''.join(lines).encode()
-              assert hashlib.sha256(data).hexdigest() == patch['after'], 'Patch checksum mismatch: ' + name
-              target.write_bytes(data)
-          for name, text in payload['files'].items():
-              target = safe(name)
-              target.parent.mkdir(parents=True, exist_ok=True)
-              target.write_text(text)
-          print('Restored',len(payload['files']),'files and',len(payload['patches']),'verified patches')
-          PY
-      - name: Vendor pinned parser and migrate application SDK contracts
+      - name: Restore checksum-verified readable sources
+        run: python3 scripts/finish-sdk-recovery.py
+      - name: Vendor pinned parser and migrate all application SDK contracts
         run: |
           npm install --ignore-scripts --no-audit --no-fund --prefix "$RUNNER_TEMP/duokit-tools" acorn@8.15.0 typescript@5.8.3
           mkdir -p vendor
@@ -68,28 +44,32 @@ jobs:
           import os
           from playwright.sync_api import sync_playwright
           with sync_playwright() as p:
-              with open(os.environ['GITHUB_ENV'],'a') as f:
-                  f.write('CHROMIUM='+p.chromium.executable_path+'\n')
+              with open(os.environ['GITHUB_ENV'], 'a') as f:
+                  f.write('CHROMIUM=' + p.chromium.executable_path + '\n')
           PY
-      - name: Validate all applications and developer workflows
+      - name: Original app regressions
+        run: python3 tests/test_browser.py --chromium "$CHROMIUM"
+      - name: Creative engines and simulator regressions
+        run: python3 tests/test_creative.py --chromium "$CHROMIUM"
+      - name: SDK and IDE authoring, visual editing and debugging
+        run: python3 tests/test_ide.py --chromium "$CHROMIUM"
+      - name: Hosted WebGPU, storage and offline edited-app runs
+        run: python3 tests/test_hosted.py --chromium "$CHROMIUM"
+      - name: Capture real developer studio gallery
+        run: python3 scripts/capture_v3.py --chromium "$CHROMIUM"
+      - name: Remove one-time transfer tools and package complete distribution
         run: |
-          python3 tests/test_browser.py --chromium "$CHROMIUM"
-          python3 tests/test_creative.py --chromium "$CHROMIUM"
-          python3 tests/test_ide.py --chromium "$CHROMIUM"
-          python3 tests/test_hosted.py --chromium "$CHROMIUM"
-      - name: Capture actual authoring views and package distribution
-        run: |
-          python3 scripts/capture_v3.py --chromium "$CHROMIUM"
+          git rm -r --ignore-unmatch .changes .github/workflows/apply-source.yml .github/workflows/recover-sdk.yml scripts/finish-sdk-recovery.py
+          mkdir -p releases
           cd sdk && npm pack --ignore-scripts --pack-destination ../releases && cd ..
           python3 scripts/package_repository.py
-      - name: Commit readable SDK, all migrated apps, IDE and evidence
+      - name: Commit SDK, all migrated apps, IDE and verified distribution
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A
-          git rm -r .changes
           git commit -m 'feat: extract DuoKit SDK, migrate twenty apps and add live developer studio'
           AUTH="$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
           git -c "http.https://github.com/.extraheader=AUTHORIZATION: basic $AUTH" push origin "HEAD:${GITHUB_REF_NAME}"
