@@ -1,14 +1,14 @@
 name: Apply verified sources
 on:
   push:
-    branches: ['feat/creative-os-2', 'feat/duokit-ide']
+    branches: ['feat/duokit-ide']
     paths: ['.changes/READY']
 permissions:
   contents: write
 jobs:
   apply:
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v6
         with:
@@ -19,25 +19,70 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Verify and apply source payload
+      - name: Restore checksum-verified source files and patches
         run: |
           python3 - <<'PY'
-          import base64, gzip, hashlib, json
+          import base64, hashlib, json, lzma
           from pathlib import Path, PurePosixPath
           packed = base64.b64decode(''.join(p.read_text().strip() for p in sorted(Path('.changes').glob('*.b64'))), validate=True)
           assert hashlib.sha256(packed).hexdigest() == Path('.changes/READY').read_text().strip(), 'Transfer checksum mismatch'
-          payload = json.loads(gzip.decompress(packed))
-          for name, text in payload['files'].items():
+          payload = json.loads(lzma.decompress(packed))
+          allowed = {'src','sdk','vendor','views','scripts','tests','docs','README.md','package.json','.gitignore'}
+          def safe(name):
               p = PurePosixPath(name)
-              assert not p.is_absolute() and '..' not in p.parts and p.parts[0] in {'src','sdk','vendor','scripts','tests','docs','README.md','package.json','.gitignore'}, name
-              target = Path(name)
+              assert not p.is_absolute() and '..' not in p.parts and p.parts[0] in allowed, name
+              return Path(name)
+          for name, patch in payload['patches'].items():
+              target = safe(name)
+              original = target.read_bytes()
+              assert hashlib.sha256(original).hexdigest() == patch['before'], 'Baseline changed: ' + name
+              lines = original.decode().splitlines(keepends=True)
+              for start, end, replacement in reversed(patch['edits']):
+                  lines[start:end] = replacement
+              data = ''.join(lines).encode()
+              assert hashlib.sha256(data).hexdigest() == patch['after'], 'Patch checksum mismatch: ' + name
+              target.write_bytes(data)
+          for name, text in payload['files'].items():
+              target = safe(name)
               target.parent.mkdir(parents=True, exist_ok=True)
               target.write_text(text)
-          print('Applied', len(payload['files']), 'verified source files')
+          print('Restored',len(payload['files']),'files and',len(payload['patches']),'verified patches')
           PY
+      - name: Vendor pinned parser and migrate application SDK contracts
+        run: |
+          npm install --ignore-scripts --no-audit --no-fund --prefix "$RUNNER_TEMP/duokit-tools" acorn@8.15.0 typescript@5.8.3
+          mkdir -p vendor
+          cp "$RUNNER_TEMP/duokit-tools/node_modules/acorn/dist/acorn.js" vendor/acorn.js
+          cp "$RUNNER_TEMP/duokit-tools/node_modules/acorn/LICENSE" vendor/ACORN-LICENSE
+          echo 'fdb08546776ec6228b03e8d02b40d4ab3255bae5f401adba7ff5dad927ac5c9c  vendor/acorn.js' | sha256sum --check
+          DUOKIT_TYPESCRIPT="$RUNNER_TEMP/duokit-tools/node_modules/typescript" node scripts/migrate_sdk_apps.cjs
           python3 scripts/build.py
           node scripts/check.mjs
-      - name: Commit readable source update
+          node tests/test_sdk.mjs
+          "$RUNNER_TEMP/duokit-tools/node_modules/.bin/tsc" --noEmit --strict --lib ES2022,DOM sdk/index.d.ts
+      - name: Install browser validation tools
+        run: |
+          python3 -m pip install -r requirements-dev.txt
+          python3 -m playwright install --with-deps chromium
+          python3 - <<'PY'
+          import os
+          from playwright.sync_api import sync_playwright
+          with sync_playwright() as p:
+              with open(os.environ['GITHUB_ENV'],'a') as f:
+                  f.write('CHROMIUM='+p.chromium.executable_path+'\n')
+          PY
+      - name: Validate all applications and developer workflows
+        run: |
+          python3 tests/test_browser.py --chromium "$CHROMIUM"
+          python3 tests/test_creative.py --chromium "$CHROMIUM"
+          python3 tests/test_ide.py --chromium "$CHROMIUM"
+          python3 tests/test_hosted.py --chromium "$CHROMIUM"
+      - name: Capture actual authoring views and package distribution
+        run: |
+          python3 scripts/capture_v3.py --chromium "$CHROMIUM"
+          cd sdk && npm pack --ignore-scripts --pack-destination ../releases && cd ..
+          python3 scripts/package_repository.py
+      - name: Commit readable SDK, all migrated apps, IDE and evidence
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -45,6 +90,17 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A
           git rm -r .changes
-          git commit -m 'feat: apply verified readable source updates and rebuild standalone distribution'
+          git commit -m 'feat: extract DuoKit SDK, migrate twenty apps and add live developer studio'
           AUTH="$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
           git -c "http.https://github.com/.extraheader=AUTHORIZATION: basic $AUTH" push origin "HEAD:${GITHUB_REF_NAME}"
+      - name: Upload source and verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: developer-source-validation
+          path: |
+            tests/*report.json
+            screenshots/failure-*.png
+            screenshots/v3-*.png
+            releases/*
+          if-no-files-found: ignore
